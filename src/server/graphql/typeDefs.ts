@@ -20,5 +20,6 @@ type Mutation{
   addUser(email: String!, password: String!): Auth
   login(email: String!, password: String!): Auth
 }
-
 `
+
+export default typedefs;
