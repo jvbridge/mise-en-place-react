@@ -1,0 +1,35 @@
+{
+  "name": "mise-en-place-react",
+  "version": "1.0.0",
+  "description": "A re-implentation of the mise en place project using react",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start-dev": "concurrently \"cd src/server && npm run watch\" \"cd src/client && npm start\"",
+    "build": "rm -rf ./build && cd src && cd server && npm run build && cd ../client && npm run build",
+    "start": "cd build/server && npm run start",
+    "install": "cd src/server && npm i && cd ../client && npm i"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jvbridge/mise-en-place-react.git"
+  },
+  "keywords": [
+    "react",
+    "graphql",
+    "time-management",
+    "node",
+    "express"
+  ],
+  "author": "Jonathan Bridge, Mia Carmen, Devin Nguyen",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jvbridge/mise-en-place-react/issues"
+  },
+  "homepage": "https://github.com/jvbridge/mise-en-place-react#readme",
+  "devDependencies": {
+    "concurrently": "^7.2.2",
+    "ts-node": "^10.8.1",
+    "typescript": "^4.7.3"
+  }
+}
