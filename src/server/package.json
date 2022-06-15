@@ -6,8 +6,7 @@
   "scripts": {
     "start": "node server.js",
     "build": "tsc --sourceMap false",
-    "watch": "nodemon --config \"../util/nodemon.json\"",
-    "seed": "node seeders/seed.js"
+    "watch": "nodemon --config \"../util/nodemon.json\""
   },
   "keywords": [],
   "author": "",
@@ -18,7 +17,7 @@
     "express": "^4.17.2",
     "graphql": "^16.3.0",
     "jsonwebtoken": "^8.5.1",
-    "mongoose": "^6.1.8"
+    "sequelize": "^6.20.1"
   },
   "devDependencies": {
     "nodemon": "^2.0.3"
