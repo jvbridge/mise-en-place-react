@@ -14,7 +14,13 @@
     "type": "git",
     "url": "git+https://github.com/jvbridge/mise-en-place-react.git"
   },
-  "keywords": [],
+  "keywords": [
+    "react",
+    "graphql",
+    "time-management",
+    "node",
+    "express"
+  ],
   "author": "Jonathan Bridge, Mia Carmen, Devin Nguyen",
   "license": "MIT",
   "bugs": {
