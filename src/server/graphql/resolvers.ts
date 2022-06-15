@@ -1,5 +1,6 @@
 import { AuthenticationError } from 'apollo-server-express';
 import User from 'models/User';
+import { signToken } from 'util/auth';
 
 const resolvers = {
   Query: {
@@ -16,7 +17,8 @@ const resolvers = {
       { email, password }: { email: string; password: string }
     ) => {
       const user = await User.create({ email, password });
-      // TODO: authorization
+      const token = signToken(user);
+      return { token, user };
     }
     // TODO login
   }
