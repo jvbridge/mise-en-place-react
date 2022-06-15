@@ -4,14 +4,16 @@
   "description": "A re-implentation of the mise en place project using react",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start-dev": "concurrently \"cd src/server && npm run watch\" \"cd src/client && npm start\"",
+    "build": ""
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/jvbridge/mise-en-place-react.git"
   },
   "keywords": [],
-  "author": "",
+  "author": "Jonathan Bridge, Mia Carmen, Devin Nguyen",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/jvbridge/mise-en-place-react/issues"
