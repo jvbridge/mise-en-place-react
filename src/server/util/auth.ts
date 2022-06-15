@@ -38,24 +38,23 @@ export interface authRequest extends Express.Request {
   user: User;
 }
 
-module.exports = {
-  authMiddleware: function ({ req }: { req: authRequest }) {
-    let token = req.body.token || req.query.token || req.headers.authorization;
+export function authMiddleware({ req }: { req: authRequest }) {
+  let token = req.body.token || req.query.token || req.headers.authorization;
 
-    if (req.headers.authorization) {
-      const tokenArr = token.split(' ');
-      const tokenStr = tokenArr.pop()?.trim();
-      if (!tokenStr) {
-        return req;
-      }
-      token = tokenStr;
+  if (req.headers.authorization) {
+    const tokenArr = token.split(' ');
+    const tokenStr = tokenArr.pop()?.trim();
+    if (!tokenStr) {
+      return req;
     }
-    const data = userDataJwtPayload(token);
-    if (data) req.user = data;
-    return req;
-  },
-  signToken: function ({ email, _id }: { email: string; _id: string }) {
-    const payload = { email, _id };
-    return jwt.sign({ data: payload }, secret, { expiresIn: expiration });
+    token = tokenStr;
   }
-};
+  const data = userDataJwtPayload(token);
+  if (data) req.user = data;
+  return req;
+}
+
+export function signToken({ email, _id }: { email: string; _id: string }) {
+  const payload = { email, _id };
+  return jwt.sign({ data: payload }, secret, { expiresIn: expiration });
+}
