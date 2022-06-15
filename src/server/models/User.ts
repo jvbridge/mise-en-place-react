@@ -1,12 +1,20 @@
-import { Schema, model } from 'mongoose';
+import mongoose, { Schema, model, Document, Model } from 'mongoose';
 import bcrypt = require('bcrypt');
 
-const userSchema = new Schema({
+// define the interface
+interface UserDocument extends Document {
+  email: string;
+  password: string;
+}
+
+// define the schema
+const userSchema = new Schema<UserDocument>({
   email: {
     type: String,
     required: true,
     unique: true,
-    trim: true
+    trim: true,
+    lowercase: true
   },
   password: {
     type: String,
@@ -30,6 +38,6 @@ userSchema.methods.isCorrectPassword = async function (password: string) {
 };
 
 // make the schema into a model
-const User = model('User', userSchema);
+const User: Model<UserDocument> = model('User', userSchema);
 
 export default User;
