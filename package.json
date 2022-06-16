@@ -9,7 +9,8 @@
     "develop-server": "cd src/server && npm run watch",
     "build": "rm -rf ./build && cd src && cd server && npm run build && cd ../client && npm run build",
     "start": "cd build/server && npm run start",
-    "install": "cd src/server && npm i && cd ../client && npm i"
+    "install": "cd src/server && npm i && cd ../client && npm i",
+    "prettier-format": "prettier --config .prettierrc 'src/**/*.ts' --write"
   },
   "repository": {
     "type": "git",
