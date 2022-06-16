@@ -40,7 +40,7 @@ export interface authRequest extends Express.Request {
 
 /**
  * Authentication middleware that verifies every JWT transaction
- * @param param0
+ * @param param0 the request, response, and next functions
  * @returns
  */
 export function authMiddleware({ req }: { req: authRequest }) {
