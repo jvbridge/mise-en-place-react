@@ -19,8 +19,19 @@ const resolvers = {
       const user = await User.create({ email, password });
       const token = signToken(user);
       return { token, user };
+    },
+    login: async (
+      parent: any,
+      { email, password }: { email: string; password: string }
+    ) => {
+      const user = await User.findOne({ email });
+
+      if (!user) {
+        throw new AuthenticationError('No user found with this email!');
+      }
+      const token = signToken(user);
+      return { token, user };
     }
-    // TODO login
   }
 };
 
