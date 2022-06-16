@@ -1,14 +1,17 @@
 import express = require('express');
 import { ApolloServer } from 'apollo-server-express';
 import path = require('path');
-import { authMiddleware } from './util/auth'; // TODO: make this stop crashing the server
-import typeDefs from 'graphql/typeDefs';
-import resolvers from 'graphql/resolvers';
-import { connect, connection, Connection } from 'mongoose';
+import { authMiddleware } from './util/auth'; 
+import {typeDefs, resolvers} from './schema'
+import connection from './config/connection'
 
+// changing the reference for ease of remembering
+const db = connection;
+
+// the port we will be on will be 3001 or whatever the service we use has
 const PORT = process.env.Port || 3001;
 const app = express();
-const db: Connection = connection;
+
 
 const server = new ApolloServer({
   typeDefs,
@@ -32,11 +35,6 @@ const start = async (typedefs: any, resolvers: any) => {
   await server.start();
   // allow our app to be added
   server.applyMiddleware({ app });
-
-  // connect to the database
-  await connect(
-    process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/miseEnPlace'
-  );
 
   // start listening on the connection
   db.once('open', () => {
