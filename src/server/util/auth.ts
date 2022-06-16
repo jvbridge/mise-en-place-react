@@ -38,6 +38,11 @@ export interface authRequest extends Express.Request {
   user: User;
 }
 
+/**
+ * Authentication middleware that verifies every JWT transaction
+ * @param param0
+ * @returns
+ */
 export function authMiddleware({ req }: { req: authRequest }) {
   let token = req.body.token || req.query.token || req.headers.authorization;
 
@@ -54,6 +59,11 @@ export function authMiddleware({ req }: { req: authRequest }) {
   return req;
 }
 
+/**
+ * Signs a web token with the user's information
+ * @param param0
+ * @returns the web token
+ */
 export function signToken({ email, _id }: { email: string; _id: string }) {
   const payload = { email, _id };
   return jwt.sign({ data: payload }, secret, { expiresIn: expiration });
