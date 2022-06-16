@@ -1,6 +1,6 @@
 {
-  "watch": ["src"],
+  "watch": ["src/*"],
   "ext": "ts",
-  "ignore": ["src/public"],
+  "ignore": ["build"],
   "exec": "ts-node server.ts dev"
 }
