@@ -1,9 +1,9 @@
 import express = require('express');
 import { ApolloServer } from 'apollo-server-express';
 import path = require('path');
-import { authMiddleware } from './util/auth'; 
-import {typeDefs, resolvers} from './schema'
-import connection from './config/connection'
+import { authMiddleware } from './util/auth';
+import { typeDefs, resolvers } from './schema';
+import connection from './config/connection';
 import { DocumentNode } from 'graphql';
 
 // changing the reference for ease of remembering
@@ -22,7 +22,7 @@ const server = new ApolloServer({
   context: authMiddleware
 });
 
-// basic middleware 
+// basic middleware
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
@@ -36,8 +36,8 @@ if (process.env.NODE_ENV === 'production') {
 
 /**
  * The start function for the server
- * @param typedefs 
- * @param resolvers 
+ * @param typedefs
+ * @param resolvers
  */
 const start = async (typedefs: DocumentNode, resolvers: any) => {
   // start the graphql server

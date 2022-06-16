@@ -30,8 +30,7 @@ export const userDataJwtPayload = (jwtToken: string): User | undefined => {
     // data not decoded
 
     // we always hit this block if the web token doesn't exist
-    if (error.message == 'jwt must be provided')
-    return undefined;
+    if (error.message == 'jwt must be provided') return undefined;
 
     // if there is a reason why, that's not a null token, lets get it
     console.error(error);
