@@ -2,15 +2,26 @@ import { useState } from 'react';
 import { Modal, Button, Form } from 'react-bootstrap';
 import kanban from './kanban.png';
 
+// enum for the type of modal we will be using
+enum ModalType {
+  login,
+  signup
+}
+
 function Homepage() {
-  const [showModal, setModal] = useState(false);
+  // the state for modal visibility
+  const [showModal, setShowModal] = useState(false);
+
+  // state for what the modal should be
+  const [currModalType, setCurrModalType] = useState(ModalType.login);
 
   const handleCloseModal = () => {
-    setModal(false);
+    setShowModal(false);
   };
 
-  const handleOpenModal = () => {
-    setModal(true);
+  const handleOpenModal = (currType: ModalType) => {
+    setCurrModalType(currType);
+    setShowModal(true);
   };
 
   // TODO: attach to backend
@@ -30,7 +41,7 @@ function Homepage() {
                 <Button
                   type="button"
                   className="btn btn-dark"
-                  onClick={handleOpenModal}
+                  onClick={() => handleOpenModal(ModalType.login)}
                 >
                   Login
                 </Button>
@@ -38,7 +49,7 @@ function Homepage() {
                 <Button
                   type="button"
                   className="btn btn-dark"
-                  onClick={handleOpenModal}
+                  onClick={() => handleOpenModal(ModalType.signup)}
                 >
                   Sign Up
                 </Button>
@@ -47,41 +58,36 @@ function Homepage() {
           </div>
         </div>
       </body>
-
-      {/* log in modal */}
       <Modal show={showModal} onHide={handleCloseModal}>
         <Modal.Header closeButton>
-          <Modal.Title>Log in to Your Account</Modal.Title>
+          {/* set the title as appropriate */}
+          {currModalType === ModalType.login ? (
+            <Modal.Title>Log in to Your Account</Modal.Title>
+          ) : (
+            <Modal.Title>Create Your Account</Modal.Title>
+          )}
         </Modal.Header>
         <Modal.Body>
-          <Form className="signup-form">
+          <Form>
             <div className="row mb-3">
-              <Form.Label
-                for="inputEmailSignUp"
-                className="col-4 col-form-label"
-              >
+              <Form.Label for="inputEmail" className="col-4 col-form-label">
                 Email
               </Form.Label>
               <div className="col-sm-10">
                 <Form.Control
                   type="text"
                   className="form-control"
-                  id="email-input-signup"
                   placeholder="Email"
                 />
               </div>
 
-              <Form.Label
-                for="inputPasswordSign"
-                className="col-4 col-form-label"
-              >
+              <Form.Label for="inputPassword" className="col-4 col-form-label">
                 Password
               </Form.Label>
               <div className="col-sm-10">
                 <Form.Control
                   type="password"
                   className="form-control"
-                  id="password-input-signup"
                   placeholder="Password"
                 />
               </div>
@@ -96,11 +102,13 @@ function Homepage() {
           >
             Close
           </Button>
+          {/* TODO: set this function to handle form submission as appropriate */}
           <Button variant="primary" onClick={handleCloseModal}>
             Save Changes
           </Button>
         </Modal.Footer>
       </Modal>
+      ;
     </>
   );
 }
