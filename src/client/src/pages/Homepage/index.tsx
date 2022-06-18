@@ -4,13 +4,21 @@ import kanban from './kanban.png';
 
 function Homepage() {
   const [showSignup, setSignup] = useState(false);
-  // const [showLogin, setLogin] = useState(false);
+  const [showLogin, setLogin] = useState(false);
+
+  const handleCloseLogin = () => {
+    setLogin(false);
+  };
+
+  const handleOpenLogin = () => {
+    setLogin(true);
+  };
 
   const handleCloseSignup = () => {
     setSignup(false);
   };
 
-  const handleShowSignup = () => {
+  const handleOpenSignup = () => {
     setSignup(true);
   };
 
@@ -26,19 +34,18 @@ function Homepage() {
               <h3>Let's Get Organized</h3>
               <div className="button-group">
                 {/* Login Button trigger modal  */}
-                <button
+                <Button
                   type="button"
                   className="btn btn-dark"
-                  data-bs-toggle="modal"
-                  data-bs-target="#loginModal"
+                  onClick={handleOpenLogin}
                 >
                   Login
-                </button>
+                </Button>
                 {/* Sign Up Button trigger modal */}
                 <Button
                   type="button"
                   className="btn btn-dark"
-                  onClick={handleShowSignup}
+                  onClick={handleOpenSignup}
                 >
                   Sign Up
                 </Button>
@@ -48,6 +55,23 @@ function Homepage() {
         </div>
       </body>
 
+      {/* log in modal */}
+      <Modal show={showLogin} onHide={handleCloseLogin}>
+        <Modal.Header closeButton>
+          <Modal.Title>Log in to Your Account</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>Woohoo, you're reading this text in a modal!</Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleCloseLogin}>
+            Close
+          </Button>
+          <Button variant="primary" onClick={handleCloseLogin}>
+            Save Changes
+          </Button>
+        </Modal.Footer>
+      </Modal>
+
+      {/* sign up modal */}
       <Modal show={showSignup} onHide={handleCloseSignup}>
         <Modal.Header closeButton>
           <Modal.Title>Create Your Account</Modal.Title>
