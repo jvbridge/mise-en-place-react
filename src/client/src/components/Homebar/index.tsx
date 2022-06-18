@@ -6,7 +6,7 @@ function Homebar(/*{ loggedIn }: { loggedIn: boolean }*/) {
   return (
     <Navbar className="justify-content-center">
       <img src={logo} alt="" width="100" height="80" id="logo" />
-      <Container>
+      <Container className="justify-content-center">
         <Nav>
           <LinkContainer to={'/Home'}>
             <Nav.Link>Home</Nav.Link>
