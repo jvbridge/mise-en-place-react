@@ -1,32 +1,30 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
 import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Homepage from './pages/Homepage';
+import Calendar from './pages/Calendar';
+import Dashboard from './pages/Dashboard';
+import NotFound from './pages/notFound';
 
 const client = new ApolloClient({
   uri: '/graphql',
-  cache: new InMemoryCache(),
-})
+  cache: new InMemoryCache()
+});
 
 function App() {
   return (
     <ApolloProvider client={client}>
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.tsx</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
-      </div>
+      <Router>
+        <div>Header</div>
+        <div className="container">
+          <Routes>
+            <Route path="/" element={<Homepage />} />
+            <Route path="/calendar" element={<Calendar />} />
+            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/*" element={<NotFound />} />
+          </Routes>
+        </div>
+      </Router>
     </ApolloProvider>
   );
 }
