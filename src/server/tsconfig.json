@@ -3,8 +3,7 @@
   "compilerOptions": {
     "module": "commonjs",
     "strict": true,
-    "baseUrl": "./",
-    "outDir": "../../build/server",
+    "outDir": "./build",
     "sourceMap": true,
     "removeComments": true,
     "experimentalDecorators": true,
@@ -12,8 +11,9 @@
     "emitDecoratorMetadata": true,
     "moduleResolution": "node",
     "importHelpers": true,
-    "types": ["node"],
-    "typeRoots": ["node_modules/@types"]
+    "typeRoots": ["node_modules/@types"],
+    "baseUrl": ".",
+    "skipLibCheck": true
   },
   "include": ["./**/*.ts"],
   "exclude": ["./**/*.test.ts"]
