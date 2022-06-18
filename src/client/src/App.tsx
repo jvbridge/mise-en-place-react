@@ -8,6 +8,9 @@ import Calendar from './pages/Calendar';
 import Dashboard from './pages/Dashboard';
 import NotFound from './pages/notFound';
 
+// components
+import Homebar from './components/Homebar';
+
 // apollo client initialization
 const client = new ApolloClient({
   uri: '/graphql',
@@ -19,7 +22,7 @@ function App() {
   return (
     <ApolloProvider client={client}>
       <Router>
-        <div>Header</div>
+        <Homebar />
         <div className="container">
           <Routes>
             <Route path="/" element={<Homepage />} />
