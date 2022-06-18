@@ -1,0 +1,251 @@
+.home-body {
+  font-family: "Roboto", Arial, Helvetica, sans-serif;
+  background-color: rgb(255, 198, 207);
+}
+
+body {
+  font-family: "Roboto", Arial, Helvetica, sans-serif;
+}
+
+nav {
+  background-color: lightsalmon;
+  font-family: "Oswald", Arial, Helvetica, sans-serif;
+  height: 6em;
+}
+
+.nav-link {
+  color: white;
+}
+
+.nav-link:hover {
+  color: lightcoral;
+}
+
+#logo {
+  margin-top: 1em;
+  position: absolute;
+  left: 5em;
+  padding-top: 12px;
+}
+
+a:link, #plus {
+  color: white;
+}
+
+a:link:hover, #plus:hover {
+  color: lightcoral;
+}
+
+/* header for all pages */
+header {
+  padding: 1em;
+  color: darkgrey;
+}
+
+/* Homepage Styles */
+.home-row {
+  margin: 10px;
+  padding: 3em;
+}
+
+.home-container {
+  padding: 5em;
+}
+
+.app-name {
+  font-size: 45px;
+}
+.button-group {
+  padding: 10px;
+}
+
+.btn {
+  background-color: lightcoral;
+  color: white;
+  border: none;
+  border-radius: 15px;
+  margin: 4px;
+  font-weight: bold;
+}
+
+.btn:active,
+.btn:focus {
+  background-color: lightsalmon;
+  color: white;
+  outline-style: none;
+}
+
+.btn:hover {
+  background-color: lightsalmon;
+}
+
+img {
+  margin-bottom: 2.5em;
+}
+
+.slogan {
+  font-weight: lighter;
+  padding-top: 3px;
+  font-size: 25px;
+}
+
+.modal-header {
+  background-color: rgb(255, 198, 207);
+}
+
+label {
+  font-weight: bold;
+}
+
+/* Dashboard Styles */
+.dash-header {
+  background-color: rgb(255, 198, 207);
+  color: white;
+}
+
+.day-card {
+  background-color: white;
+}
+
+h5 {
+  margin-top: 0.5em;
+}
+
+#today {
+  font-family: monospace;
+  margin-left: 15px;
+}
+
+
+/* Calendar Styles */
+.calendar-header {
+  background-color: rgb(255, 198, 207);
+  color: white;
+}
+
+.calendar-card {
+  background-color: white;
+}
+
+.addToCal-btn {
+  margin-top: 5px;
+  background-color: lightcoral;
+}
+
+.addToCal-btn:hover {
+  color: white;
+}
+
+
+/* Add Event Styles */
+.event-header {
+  background-color: rgb(255, 198, 207);
+  color: white;
+  text-align: center;
+}
+
+.event-form-container {
+  margin-left: 1em;
+  margin-top: 10px;
+}
+
+.form-label {
+  padding-top: 8px;
+  font-weight: bold;
+}
+
+.event-btn {
+  background-color: lightcoral;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  margin-top: 10px;
+  /* font-weight: bold; */
+}
+
+.event-btn:hover {
+  background-color: lightsalmon;
+}
+
+/* Repeated Styles */
+.repeat-card {
+  background-color: white;
+}
+
+/* Checklist Styles */
+.addCheck:link {
+  color: white;
+}
+
+.checklist-form {
+  margin-top: 1em;
+}
+
+.add-item-btn {
+  background-color: lightcoral;
+  color: white;
+  font-size: 13px;
+  border: none;
+  border-radius: 15px;
+  margin-left: 10px;
+  margin-bottom: 5px;
+}
+
+#addon-btn {
+  background-color: lightcoral;
+  color: white;
+  border: none;
+  border-radius: 0;
+  font-size: 18px;
+}
+
+.form-check-label {
+  font-weight: normal;
+  margin-left: 5px;
+}
+
+ul {
+  list-style: none;
+}
+
+#checklist-name {
+  margin-top: 20px;
+}
+
+/* To-Do List Styles */
+i {
+  float: right;
+}
+
+#plus:link {
+  color: white;
+}
+
+.to-do-card-header {
+  /* background-color: lightgreen; */
+  background-color: rgb(255, 198, 207);
+  color: white;
+}
+
+.to-do-card {
+  margin-bottom: 2em;
+}
+
+/* .to-do-item {
+      background-color: rgb(160, 255, 160);
+  } */
+
+.missed-card {
+  margin-bottom: 2em;
+}
+
+.missed-card-header {
+  /* background-color: lightcoral; */
+  background-color: rgb(255, 198, 207);
+  color: white;
+}
+
+.missed-item {
+  background-color: rgb(238, 238, 238);
+  /* rgb(238, 238, 238) */
+}
