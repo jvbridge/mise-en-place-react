@@ -1,26 +1,19 @@
 import { useState } from 'react';
-import { Modal, Button } from 'react-bootstrap';
+import { Modal, Button, Form } from 'react-bootstrap';
 import kanban from './kanban.png';
 
 function Homepage() {
-  const [showSignup, setSignup] = useState(false);
-  const [showLogin, setLogin] = useState(false);
+  const [showModal, setModal] = useState(false);
 
-  const handleCloseLogin = () => {
-    setLogin(false);
+  const handleCloseModal = () => {
+    setModal(false);
   };
 
-  const handleOpenLogin = () => {
-    setLogin(true);
+  const handleOpenModal = () => {
+    setModal(true);
   };
 
-  const handleCloseSignup = () => {
-    setSignup(false);
-  };
-
-  const handleOpenSignup = () => {
-    setSignup(true);
-  };
+  // TODO: attach to backend
 
   return (
     <>
@@ -37,7 +30,7 @@ function Homepage() {
                 <Button
                   type="button"
                   className="btn btn-dark"
-                  onClick={handleOpenLogin}
+                  onClick={handleOpenModal}
                 >
                   Login
                 </Button>
@@ -45,7 +38,7 @@ function Homepage() {
                 <Button
                   type="button"
                   className="btn btn-dark"
-                  onClick={handleOpenSignup}
+                  onClick={handleOpenModal}
                 >
                   Sign Up
                 </Button>
@@ -56,32 +49,54 @@ function Homepage() {
       </body>
 
       {/* log in modal */}
-      <Modal show={showLogin} onHide={handleCloseLogin}>
+      <Modal show={showModal} onHide={handleCloseModal}>
         <Modal.Header closeButton>
           <Modal.Title>Log in to Your Account</Modal.Title>
         </Modal.Header>
-        <Modal.Body>Woohoo, you're reading this text in a modal!</Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleCloseLogin}>
-            Close
-          </Button>
-          <Button variant="primary" onClick={handleCloseLogin}>
-            Save Changes
-          </Button>
-        </Modal.Footer>
-      </Modal>
+        <Modal.Body>
+          <Form className="signup-form">
+            <div className="row mb-3">
+              <Form.Label
+                for="inputEmailSignUp"
+                className="col-4 col-form-label"
+              >
+                Email
+              </Form.Label>
+              <div className="col-sm-10">
+                <Form.Control
+                  type="text"
+                  className="form-control"
+                  id="email-input-signup"
+                  placeholder="Email"
+                />
+              </div>
 
-      {/* sign up modal */}
-      <Modal show={showSignup} onHide={handleCloseSignup}>
-        <Modal.Header closeButton>
-          <Modal.Title>Create Your Account</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>Woohoo, you're reading this text in a modal!</Modal.Body>
+              <Form.Label
+                for="inputPasswordSign"
+                className="col-4 col-form-label"
+              >
+                Password
+              </Form.Label>
+              <div className="col-sm-10">
+                <Form.Control
+                  type="password"
+                  className="form-control"
+                  id="password-input-signup"
+                  placeholder="Password"
+                />
+              </div>
+            </div>
+          </Form>
+        </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={handleCloseSignup}>
+          <Button
+            variant="secondary"
+            className="btn btn-secondary"
+            onClick={handleCloseModal}
+          >
             Close
           </Button>
-          <Button variant="primary" onClick={handleCloseSignup}>
+          <Button variant="primary" onClick={handleCloseModal}>
             Save Changes
           </Button>
         </Modal.Footer>
