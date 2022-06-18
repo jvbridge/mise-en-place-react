@@ -7,7 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start-dev": "concurrently \"cd src/server && npm run watch\" \"cd src/client && npm start\"",
     "develop-server": "cd src/server && npm run watch",
-    "build": "rm -rf ./build && cd src && cd server && npm run build && cd ../client && npm run build",
+    "build": "cd src && cd server && npm run build && cd ../client && npm run build",
     "start": "node --es-module-specifier-resolution=node src/server/build/server.js",
     "install": "cd src/server && npm i && cd ../client && npm i",
     "prettier-format": "prettier --config .prettierrc 'src/**/*.ts' --write"
