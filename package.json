@@ -13,7 +13,7 @@
     "build": "npm run build-server && npm run build-client",
     "build-server": "tsc -p ./config/tsconfig.json --sourceMap false",
     "build-client": "set BUILD_PATH=../../build/client && cd src/client && react-scripts build",
-    "start": "node --es-module-specifier-resolution=node build/server/server.js",
+    "start": "node --es-module-specifier-resolution=node ./build/server/server.js",
     "prettier-format": "prettier --config ./config/prettierrc 'src/**/*.ts' --write",
     "eject": "cd src/client && react-scripts eject"
   },
