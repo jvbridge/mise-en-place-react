@@ -46,5 +46,6 @@
   },
   "devDependencies": {
     "@types/react-router-bootstrap": "^0.24.5"
-  }
+  },
+  "homepage": "./"
 }
