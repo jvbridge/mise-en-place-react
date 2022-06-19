@@ -28,9 +28,9 @@ app.use(express.json());
 
 // redirect all gets in production to be handled by react router
 if (process.env.NODE_ENV === 'production') {
-  app.use(express.static(path.join(__dirname, 'client/')));
+  app.use(express.static(path.join(__dirname, '../client/')));
   app.get('/*', (req, res) => {
-    res.sendFile(path.join(__dirname, 'client/index.html'));
+    res.sendFile(path.join(__dirname, '../client/index.html'));
   });
 }
 
