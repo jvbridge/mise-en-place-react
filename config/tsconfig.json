@@ -1,0 +1,19 @@
+{
+  "compileOnSave": true,
+  "compilerOptions": {
+    "module": "commonjs",
+    "strict": true,
+    "outDir": "../build/server",
+    "sourceMap": true,
+    "removeComments": true,
+    "experimentalDecorators": true,
+    "target": "es6",
+    "emitDecoratorMetadata": true,
+    "moduleResolution": "node",
+    "importHelpers": true,
+    "typeRoots": ["node_modules/@types"],
+    "skipLibCheck": true
+  },
+  "include": ["../src/server/**/*.ts"],
+  "exclude": ["../src/server/**/*.test.ts"]
+}
