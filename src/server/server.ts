@@ -10,7 +10,7 @@ import { DocumentNode } from 'graphql';
 const db = connection;
 
 // the port we will be on will be 3001 or whatever the service we use has
-const PORT = process.env.Port || 3001;
+const PORT = process.env.PORT || 3001;
 
 // create the express server
 const app = express();
@@ -19,7 +19,7 @@ const app = express();
 const server = new ApolloServer({
   typeDefs,
   resolvers,
-  context: authMiddleware
+  context: authMiddleware,
 });
 
 // basic middleware
