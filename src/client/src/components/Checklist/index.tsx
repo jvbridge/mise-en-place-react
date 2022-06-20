@@ -1,3 +1,4 @@
+import { Card, ListGroup } from 'react-bootstrap';
 import ChecklistMember from './ChecklistMember';
 
 export interface ChecklistProps {
@@ -9,6 +10,7 @@ export interface ChecklistProps {
 export interface ChecklistItem {
   name: string;
   done: boolean;
+  time?: string;
 }
 
 function Checklist({ checklistItems, name, displayList }: ChecklistProps) {
@@ -17,19 +19,19 @@ function Checklist({ checklistItems, name, displayList }: ChecklistProps) {
 
   if (!displayList) {
     addItem = (
-      <a href="" id="plus">
+      <button className="link-button plus">
         <i className="fa-solid fa-plus"></i>
-      </a>
+      </button>
     );
   }
 
   return (
-    <div className="card to-do-card" style={{ width: '100%' }}>
-      <div className="card-header to-do-card-header">
+    <Card className="to-do-card" style={{ width: '100%' }}>
+      <Card.Header className="to-do-card-header">
         {name}
         {addItem}
-      </div>
-      <ul className="list-group list-group-flush">
+      </Card.Header>
+      <ListGroup variant="flush">
         {checklistItems.length ? (
           checklistItems.map((item) => {
             return (
@@ -43,8 +45,8 @@ function Checklist({ checklistItems, name, displayList }: ChecklistProps) {
         ) : (
           <li className="list-group-item to-do-item">No items yet!</li>
         )}
-      </ul>
-    </div>
+      </ListGroup>
+    </Card>
   );
 }
 
