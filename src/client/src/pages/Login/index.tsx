@@ -24,6 +24,8 @@ function Login() {
     setShowModal(true);
   };
 
+  const handleSubmit = () => {};
+
   // TODO: attach to backend
 
   return (
@@ -102,8 +104,7 @@ function Login() {
           >
             Close
           </Button>
-          {/* TODO: set this function to handle form submission as appropriate */}
-          <Button variant="primary" onClick={handleCloseModal}>
+          <Button variant="primary" onClick={handleSubmit}>
             Save Changes
           </Button>
         </Modal.Footer>
