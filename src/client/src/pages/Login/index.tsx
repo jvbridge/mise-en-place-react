@@ -5,10 +5,10 @@ import kanban from './kanban.png';
 // enum for the type of modal we will be using
 enum ModalType {
   login,
-  signup
+  signup,
 }
 
-function Homepage() {
+function Login() {
   // the state for modal visibility
   const [showModal, setShowModal] = useState(false);
 
@@ -113,4 +113,4 @@ function Homepage() {
   );
 }
 
-export default Homepage;
+export default Login;
