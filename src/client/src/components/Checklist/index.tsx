@@ -1,6 +1,7 @@
 export type ChecklistProps = {
-  checklistItems: [checklistItem];
+  checklistItems: checklistItem[];
   name: string;
+  displayList: boolean;
 };
 
 export type checklistItem = {
@@ -8,34 +9,35 @@ export type checklistItem = {
   done: boolean;
 };
 
+/**
+ * Intellisense is cool
+ * @param props
+ * @returns
+ */
 function Checklist(props: ChecklistProps) {
+  // destructuring the props
   const { checklistItems, name } = props;
 
   return (
-    <>
-      <div className="card to-do-card" style={{ width: '100%' }}>
-        <div className="card-header to-do-card-header">
-          To Do:
-          <a href="checklist" id="plus">
-            <i className="fa-solid fa-plus"></i>
-          </a>
-        </div>
-        <ul className="list-group list-group-flush">
-          {/* {{#each checklistItems as |item|}} */}
-          <li className="list-group-item to-do-item">Name goes here</li>
-          {/* {{/each}} */}
-        </ul>
+    <div className="card to-do-card" style={{ width: '100%' }}>
+      <div className="card-header to-do-card-header">
+        {name}
+        <a href="" id="plus">
+          <i className="fa-solid fa-plus"></i>
+        </a>
       </div>
-
-      <div className="card to-do-card" style={{ width: '100%' }}>
-        <div className="card-header missed-card-header">Missed To Dos:</div>
-        <ul className="list-group list-group-flush">
-          {/* {{#each checklistItems as |item|}} */}
-          <li className="list-group-item missed-item">Name goes here</li>
-          {/* {{/each}} */}
-        </ul>
-      </div>
-    </>
+      <ul className="list-group list-group-flush">
+        {checklistItems.length ? (
+          checklistItems.map((item) => {
+            return (
+              <li className="list-group-item to-do-item">Name goes here</li>
+            );
+          })
+        ) : (
+          <li className="list-group-item to-do-item">No items yet!</li>
+        )}
+      </ul>
+    </div>
   );
 }
 
