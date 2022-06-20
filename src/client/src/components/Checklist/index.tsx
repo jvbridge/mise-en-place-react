@@ -28,8 +28,10 @@ function Checklist({ checklistItems, name, displayList }: ChecklistProps) {
   return (
     <Card className="to-do-card" style={{ width: '100%' }}>
       <Card.Header className="to-do-card-header">
-        {name}
-        {addItem}
+        <div className="d-flex justify-content-between">
+          {name}
+          {addItem}
+        </div>
       </Card.Header>
       <ListGroup variant="flush">
         {checklistItems.length ? (
