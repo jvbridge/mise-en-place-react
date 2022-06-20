@@ -28,7 +28,7 @@ function Login() {
 
   return (
     <>
-      <body className="home-body">
+      <div className="home-body">
         <div className="d-flex home-row justify-content-center align-items-center">
           <div className="col-6">
             <div className="container home-container container-fluid bg-light text-center">
@@ -57,7 +57,7 @@ function Login() {
             </div>
           </div>
         </div>
-      </body>
+      </div>
       <Modal show={showModal} onHide={handleCloseModal}>
         <Modal.Header closeButton>
           {/* set the title as appropriate */}
