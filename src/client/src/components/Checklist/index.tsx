@@ -1,36 +1,43 @@
-export type ChecklistProps = {
-  checklistItems: checklistItem[];
+import ChecklistMember from './ChecklistMember';
+
+export interface ChecklistProps {
+  checklistItems: ChecklistItem[];
   name: string;
   displayList: boolean;
-};
+}
 
-export type checklistItem = {
+export interface ChecklistItem {
   name: string;
   done: boolean;
-};
+}
 
-/**
- * Intellisense is cool
- * @param props
- * @returns
- */
-function Checklist(props: ChecklistProps) {
-  // destructuring the props
-  const { checklistItems, name } = props;
+function Checklist({ checklistItems, name, displayList }: ChecklistProps) {
+  // conditional rendering for adding an item to the list
+  let addItem;
+
+  if (!displayList) {
+    addItem = (
+      <a href="" id="plus">
+        <i className="fa-solid fa-plus"></i>
+      </a>
+    );
+  }
 
   return (
     <div className="card to-do-card" style={{ width: '100%' }}>
       <div className="card-header to-do-card-header">
         {name}
-        <a href="" id="plus">
-          <i className="fa-solid fa-plus"></i>
-        </a>
+        {addItem}
       </div>
       <ul className="list-group list-group-flush">
         {checklistItems.length ? (
           checklistItems.map((item) => {
             return (
-              <li className="list-group-item to-do-item">Name goes here</li>
+              <ChecklistMember
+                name={item.name}
+                done={item.done}
+                display={displayList}
+              />
             );
           })
         ) : (
