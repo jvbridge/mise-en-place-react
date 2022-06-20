@@ -1,7 +1,10 @@
 import { useState } from 'react';
 import { Modal, Button, Form } from 'react-bootstrap';
-import kanban from './kanban.png';
+import auth from '../../util/auth';
+import { useMutation } from '@apollo/client';
 
+// resources
+import kanban from './kanban.png';
 // enum for the type of modal we will be using
 enum ModalType {
   login,
@@ -24,7 +27,9 @@ function Login() {
     setShowModal(true);
   };
 
-  const handleSubmit = () => {};
+  const handleSubmit = () => {
+    /**TODO */
+  };
 
   // TODO: attach to backend
 
@@ -70,29 +75,36 @@ function Login() {
           )}
         </Modal.Header>
         <Modal.Body>
-          <Form>
+          <Form onSubmit={handleSubmit}>
             <div className="row mb-3">
-              <Form.Label for="inputEmail" className="col-4 col-form-label">
-                Email
-              </Form.Label>
-              <div className="col-sm-10">
-                <Form.Control
-                  type="text"
-                  className="form-control"
-                  placeholder="Email"
-                />
-              </div>
+              <Form.Group controlId="formEmail">
+                <Form.Label for="inputEmail" className="col-4 col-form-label">
+                  Email
+                </Form.Label>
+                <div className="col-sm-10">
+                  <Form.Control
+                    type="text"
+                    className="form-control"
+                    placeholder="Email"
+                  />
+                </div>
+              </Form.Group>
 
-              <Form.Label for="inputPassword" className="col-4 col-form-label">
-                Password
-              </Form.Label>
-              <div className="col-sm-10">
-                <Form.Control
-                  type="password"
-                  className="form-control"
-                  placeholder="Password"
-                />
-              </div>
+              <Form.Group controlId="formPassword">
+                <Form.Label
+                  for="inputPassword"
+                  className="col-4 col-form-label"
+                >
+                  Password
+                </Form.Label>
+                <div className="col-sm-10">
+                  <Form.Control
+                    type="password"
+                    className="form-control"
+                    placeholder="Password"
+                  />
+                </div>
+              </Form.Group>
             </div>
           </Form>
         </Modal.Body>
