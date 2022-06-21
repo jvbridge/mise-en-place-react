@@ -15,9 +15,11 @@ import NotFound from './pages/notFound';
 
 // components
 import Homebar from './components/Homebar';
+import Checklist from './components/Checklist';
 
 // authorization
 import auth from './util/auth';
+import { useState } from 'react';
 
 // apollo client initialization
 const client = new ApolloClient({
@@ -27,18 +29,38 @@ const client = new ApolloClient({
 
 // main app
 function App() {
+  const [todos, setTodos] = useState([]);
+
   return (
     <ApolloProvider client={client}>
       <Router>
         <Homebar />
         {auth.loggedIn() ? (
-          <Routes>
-            <Route path="/" element={<Dashboard />} />
-            <Route path="/calendar" element={<Calendar />} />
-            <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/login" element={<Navigate to="/" />} />
-            <Route path="/*" element={<NotFound />} />
-          </Routes>
+          <div className="container">
+            <div className="row mt-3">
+              <div className="col-9">
+                <Routes>
+                  <Route path="/" element={<Dashboard />} />
+                  <Route path="/calendar" element={<Calendar />} />
+                  <Route path="/dashboard" element={<Dashboard />} />
+                  <Route path="/login" element={<Navigate to="/" />} />
+                  <Route path="/*" element={<NotFound />} />
+                </Routes>
+              </div>
+              <div className="col-3">
+                <Checklist
+                  name="Todos"
+                  checklistItems={todos}
+                  displayList={false}
+                />
+                <Checklist
+                  name="Missed Todos:"
+                  checklistItems={todos}
+                  displayList={true}
+                />
+              </div>
+            </div>
+          </div>
         ) : (
           <Routes>
             <Route path="/" element={<Login />} />
