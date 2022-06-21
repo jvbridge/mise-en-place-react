@@ -18,11 +18,8 @@ function Homebar(/*{ loggedIn }: { loggedIn: boolean }*/) {
       <img src={logo} alt="" width="100" height="80" id="logo" />
       <Container className="justify-content-center">
         <Nav>
-          <LinkContainer to={'/Home'}>
-            <Nav.Link>Home</Nav.Link>
-          </LinkContainer>
-          <LinkContainer to={'/Dashboard'}>
-            <Nav.Link href="/Dashboard">Dashboard</Nav.Link>
+          <LinkContainer to={'/'}>
+            <Nav.Link>Dashboard</Nav.Link>
           </LinkContainer>
           <LinkContainer to={'/Calendar'}>
             <Nav.Link>Calendar</Nav.Link>
