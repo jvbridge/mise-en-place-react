@@ -7,15 +7,20 @@ interface ChecklistItem {
   done: boolean;
 }
 
-interface ChecklistDocument extends Document {
+interface ChecklistDocument extends Document<Types.ObjectId> {
   name: string;
   items: ChecklistItem[];
+  user: Types.ObjectId;
 }
 
 const checklistSchema = new Schema<ChecklistDocument>({
   name: {
     type: String,
     required: true,
+  },
+  user: {
+    type: Schema.Types.ObjectId,
+    ref: 'Parent',
   },
   items: [],
 });
