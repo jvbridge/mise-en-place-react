@@ -1,10 +1,11 @@
-import { Schema, model, Document, Model } from 'mongoose';
+import { Schema, model, Document, Model, Types } from 'mongoose';
 import bcrypt = require('bcrypt');
 
 // define the interface
 interface UserDocument extends Document {
   email: string;
   password: string;
+  checklists: Types.ObjectId[];
 }
 
 // define the schema
@@ -20,6 +21,9 @@ const userSchema = new Schema<UserDocument>({
     type: String,
     required: true,
     minlength: 5,
+  },
+  checklists: {
+    type: [{ type: Schema.Types.ObjectId, ref: 'Checklist' }],
   },
 });
 
