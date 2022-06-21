@@ -27,11 +27,13 @@ function Login() {
     setShowModal(true);
   };
 
-  const handleSubmit = () => {
-    /**TODO */
+  const handleSubmit = async (event: Event | MouseEvent) => {
+    event.preventDefault();
+    try {
+    } catch (error) {
+      console.error(error);
+    }
   };
-
-  // TODO: attach to backend
 
   return (
     <>
@@ -66,16 +68,16 @@ function Login() {
         </div>
       </div>
       <Modal show={showModal} onHide={handleCloseModal}>
-        <Modal.Header closeButton>
-          {/* set the title as appropriate */}
-          {currModalType === ModalType.login ? (
-            <Modal.Title>Log in to Your Account</Modal.Title>
-          ) : (
-            <Modal.Title>Create Your Account</Modal.Title>
-          )}
-        </Modal.Header>
-        <Modal.Body>
-          <Form onSubmit={handleSubmit}>
+        <Form onSubmit={(e) => handleSubmit}>
+          <Modal.Header closeButton>
+            {/* set the title as appropriate */}
+            {currModalType === ModalType.login ? (
+              <Modal.Title>Log in to Your Account</Modal.Title>
+            ) : (
+              <Modal.Title>Create Your Account</Modal.Title>
+            )}
+          </Modal.Header>
+          <Modal.Body>
             <div className="row mb-3">
               <Form.Group controlId="formEmail">
                 <Form.Label for="inputEmail" className="col-4 col-form-label">
@@ -106,22 +108,21 @@ function Login() {
                 </div>
               </Form.Group>
             </div>
-          </Form>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button
-            variant="secondary"
-            className="btn btn-secondary"
-            onClick={handleCloseModal}
-          >
-            Close
-          </Button>
-          <Button variant="primary" onClick={handleSubmit}>
-            Save Changes
-          </Button>
-        </Modal.Footer>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button
+              variant="secondary"
+              className="btn btn-secondary"
+              onClick={handleCloseModal}
+            >
+              Close
+            </Button>
+            <Button variant="primary" type="submit">
+              Save Changes
+            </Button>
+          </Modal.Footer>
+        </Form>
       </Modal>
-      ;
     </>
   );
 }
