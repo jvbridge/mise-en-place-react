@@ -2,9 +2,10 @@ import { gql } from 'apollo-server-express';
 
 const typeDefs = gql`
   type User {
-    _id: ID
+    _id: ID!
     email: String
     password: String
+    checklists: [Checklist]
   }
 
   type Auth {
@@ -25,9 +26,12 @@ const typeDefs = gql`
 
   type Query {
     me: User
+    checklists: [Checklist]
+    checklist(id: ID!): Checklist
   }
 
   type Mutation {
+    addChecklist(name: String!): Checklist
     addUser(email: String!, password: String!): Auth
     login(email: String!, password: String!): Auth
   }
