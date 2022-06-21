@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { FormEvent, useState } from 'react';
 import { Modal, Button, Form } from 'react-bootstrap';
 import auth from '../../util/auth';
 import { useMutation } from '@apollo/client';
@@ -15,6 +15,11 @@ enum ModalType {
 
 function Login() {
   // apollo mutation for adding a user
+  const [addUser /*{ error: signUpError, data: signUpData }*/] =
+    useMutation(ADD_USER);
+
+  // apollo mutation for logging in
+  const [login /*{ error: loginError, data: loginData }*/] = useMutation(LOGIN);
 
   // the state for modal visibility
   const [showModal, setShowModal] = useState(false);
@@ -48,16 +53,33 @@ function Login() {
   };
 
   // handler for submission of the field
-  const handleSubmit = async (event: Event) => {
-    console.log(event);
+  const handleSubmit = async (event: FormEvent) => {
+    event.preventDefault();
+    console.log('submitted form');
     try {
+      // logging in
+      if (currModalType === ModalType.login) {
+        console.log('logging in');
+      }
+      // signing up
+      if (currModalType === ModalType.signup) {
+        // send the data to the graphql serer
+        const { data } = await addUser({
+          variables: { ...formState },
+        });
+
+        console.log('data for signup: ', data);
+        // then add the token to local storage
+        auth.login(data.addUser.token);
+      }
     } catch (error) {
-      console.error(error);
+      console.error('got error:\n', error);
     }
   };
 
   return (
     <>
+      {/* main body of the page */}
       <div className="home-body">
         <div className="d-flex home-row justify-content-center align-items-center">
           <div className="col-6">
@@ -88,8 +110,9 @@ function Login() {
           </div>
         </div>
       </div>
+      {/* modal for logging in */}
       <Modal show={showModal} onHide={handleCloseModal}>
-        <Form onSubmit={(e) => handleSubmit}>
+        <Form onSubmit={handleSubmit}>
           <Modal.Header closeButton>
             {/* set the title as appropriate */}
             {currModalType === ModalType.login ? (
