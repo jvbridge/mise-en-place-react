@@ -1,8 +1,18 @@
 import { Navbar, Nav, Container } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
+import auth from '../../util/auth';
 
 import logo from './mise_en_place_transparent.png';
 function Homebar(/*{ loggedIn }: { loggedIn: boolean }*/) {
+  let logOut;
+
+  if (auth.loggedIn())
+    logOut = (
+      <LinkContainer to={'/'}>
+        <Nav.Link onClick={() => auth.logout()}>Log Out</Nav.Link>
+      </LinkContainer>
+    );
+
   return (
     <Navbar className="justify-content-center">
       <img src={logo} alt="" width="100" height="80" id="logo" />
@@ -26,10 +36,7 @@ function Homebar(/*{ loggedIn }: { loggedIn: boolean }*/) {
           <LinkContainer to={'/Checklist'}>
             <Nav.Link>Checklist</Nav.Link>
           </LinkContainer>
-          {/* Need conditional for logged in
-            <li class="nav-item">
-                <a class="nav-link" id="logout" href="/login">Logout</a>
-            </li> */}
+          {logOut}
         </Nav>
       </Container>
     </Navbar>
