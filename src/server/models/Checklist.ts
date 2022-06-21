@@ -20,7 +20,7 @@ const checklistSchema = new Schema<ChecklistDocument>({
   },
   user: {
     type: Schema.Types.ObjectId,
-    ref: 'Parent',
+    ref: 'User',
   },
   items: [],
 });
