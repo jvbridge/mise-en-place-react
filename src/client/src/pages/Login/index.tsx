@@ -3,6 +3,8 @@ import { Modal, Button, Form } from 'react-bootstrap';
 import auth from '../../util/auth';
 import { useMutation } from '@apollo/client';
 
+import { ADD_USER, LOGIN } from '../../util/mutations';
+
 // resources
 import kanban from './kanban.png';
 // enum for the type of modal we will be using
@@ -12,12 +14,15 @@ enum ModalType {
 }
 
 function Login() {
+  // apollo mutation for adding a user
+
   // the state for modal visibility
   const [showModal, setShowModal] = useState(false);
 
   // state for what the modal should be
   const [currModalType, setCurrModalType] = useState(ModalType.login);
 
+  // handlers for opening and closing the modal
   const handleCloseModal = () => {
     setShowModal(false);
   };
@@ -27,8 +32,24 @@ function Login() {
     setShowModal(true);
   };
 
-  const handleSubmit = async (event: Event | MouseEvent) => {
-    event.preventDefault();
+  // use state for the form to submit
+  const [formState, setFormState] = useState({
+    email: '',
+    password: '',
+  });
+
+  // handling the changes so that the formstate will appropriately login
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFormState({
+      ...formState,
+      [name]: value,
+    });
+  };
+
+  // handler for submission of the field
+  const handleSubmit = async (event: Event) => {
+    console.log(event);
     try {
     } catch (error) {
       console.error(error);
@@ -86,6 +107,9 @@ function Login() {
                 <div className="col-sm-10">
                   <Form.Control
                     type="text"
+                    name="email"
+                    value={formState.email}
+                    onChange={handleChange}
                     className="form-control"
                     placeholder="Email"
                   />
@@ -102,6 +126,9 @@ function Login() {
                 <div className="col-sm-10">
                   <Form.Control
                     type="password"
+                    name="password"
+                    value={formState.password}
+                    onChange={handleChange}
                     className="form-control"
                     placeholder="Password"
                   />
