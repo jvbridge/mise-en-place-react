@@ -12,6 +12,17 @@ const typeDefs = gql`
     user: User
   }
 
+  type ChecklistItem {
+    name: String!
+    due: String
+    done: Boolean!
+  }
+
+  type Checklist {
+    name: String!
+    items: [ChecklistItem]
+  }
+
   type Query {
     me: User
   }
