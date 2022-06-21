@@ -1,4 +1,4 @@
-import mongoose, { Schema, model, Document, Model } from 'mongoose';
+import { Schema, model, Document, Model } from 'mongoose';
 import bcrypt = require('bcrypt');
 
 // define the interface
@@ -14,13 +14,13 @@ const userSchema = new Schema<UserDocument>({
     required: true,
     unique: true,
     trim: true,
-    lowercase: true
+    lowercase: true,
   },
   password: {
     type: String,
     required: true,
-    minlength: 5
-  }
+    minlength: 5,
+  },
 });
 
 // before making a new user or updating a user's password, ecrypt it
