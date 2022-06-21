@@ -1,15 +1,15 @@
 .home-body {
-  font-family: "Roboto", Arial, Helvetica, sans-serif;
+  font-family: 'Roboto', Arial, Helvetica, sans-serif;
   background-color: rgb(255, 198, 207);
 }
 
 body {
-  font-family: "Roboto", Arial, Helvetica, sans-serif;
+  font-family: 'Roboto', Arial, Helvetica, sans-serif;
 }
 
 nav {
   background-color: lightsalmon;
-  font-family: "Oswald", Arial, Helvetica, sans-serif;
+  font-family: 'Oswald', Arial, Helvetica, sans-serif;
   height: 6em;
 }
 
@@ -28,12 +28,22 @@ nav {
   padding-top: 12px;
 }
 
-a:link, #plus {
+.plus {
   color: white;
 }
 
-a:link:hover, #plus:hover {
+.plus:hover {
   color: lightcoral;
+}
+
+.link-button {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  text-decoration: underline;
+  display: inline;
+  margin: 0;
+  padding: 0;
 }
 
 /* header for all pages */
@@ -116,7 +126,6 @@ h5 {
   margin-left: 15px;
 }
 
-
 /* Calendar Styles */
 .calendar-header {
   background-color: rgb(255, 198, 207);
@@ -135,7 +144,6 @@ h5 {
 .addToCal-btn:hover {
   color: white;
 }
-
 
 /* Add Event Styles */
 .event-header {
@@ -215,10 +223,6 @@ ul {
 /* To-Do List Styles */
 i {
   float: right;
-}
-
-#plus:link {
-  color: white;
 }
 
 .to-do-card-header {
