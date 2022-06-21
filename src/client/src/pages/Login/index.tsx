@@ -59,7 +59,10 @@ function Login() {
     try {
       // logging in
       if (currModalType === ModalType.login) {
-        console.log('logging in');
+        const { data } = await login({
+          variables: { ...formState },
+        });
+        auth.login(data.login.token);
       }
       // signing up
       if (currModalType === ModalType.signup) {
@@ -68,7 +71,6 @@ function Login() {
           variables: { ...formState },
         });
 
-        console.log('data for signup: ', data);
         // then add the token to local storage
         auth.login(data.addUser.token);
       }
