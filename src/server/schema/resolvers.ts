@@ -42,18 +42,19 @@ const resolvers = {
       const token = signToken(user);
       return { token, user };
     },
-    // addChecklist: async (parent: any, args: { name: string }, context: any) => {
-    //   if (context.user) {
-    //     const newChecklist = await Checklist.create({
-    //       name: args.name,
-    //       user: context.user._id,
-    //     });
-    //     const currUser = await User.findById(context.user._id);
-    //     currUser?.checklists.push(newChecklist._id);
-    //     await User.save()
-    //   }
-    //   throw new AuthenticationError('Must be logged in to add a checklist');
-    // },
+    addChecklist: async (parent: any, args: { name: string }, context: any) => {
+      if (context.user) {
+        const newChecklist = await Checklist.create({
+          name: args.name,
+          user: context.user._id,
+        });
+        const currUser = await User.findById(context.user._id);
+        currUser?.checklists.push(newChecklist._id);
+        await currUser?.save();
+        return newChecklist;
+      }
+      throw new AuthenticationError('Must be logged in to add a checklist');
+    },
   },
 };
 
