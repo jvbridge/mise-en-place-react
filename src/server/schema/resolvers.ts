@@ -1,7 +1,8 @@
-import { AuthenticationError } from 'apollo-server-express';
+import { AuthenticationError, UserInputError } from 'apollo-server-express';
 import User from '../models/User';
-import Checklist from '../models/Checklist';
+import Checklist, { ChecklistItem } from '../models/Checklist';
 import { signToken } from '../util/auth';
+import { Types } from 'mongoose';
 
 const resolvers = {
   Query: {
@@ -54,6 +55,30 @@ const resolvers = {
         return newChecklist;
       }
       throw new AuthenticationError('Must be logged in to add a checklist');
+    },
+    addChecklistItem: async (
+      parent: any,
+      args: { id: string; itemName: string; due?: string },
+      context: any
+    ) => {
+      if (context.user) {
+        const currChecklist = await Checklist.findById(args.id);
+        if (!currChecklist) {
+          throw new UserInputError('could not find checklist with that ID');
+        }
+        const newChecklistItem: ChecklistItem = {
+          name: args.itemName,
+          done: false,
+          _id: new Types.ObjectId(),
+        };
+
+        if (args.due) {
+          newChecklistItem.due = new Date(args.due);
+        }
+        currChecklist.items.push(newChecklistItem);
+        return currChecklist.save();
+      }
+      throw new AuthenticationError('Must be logged in to modify a checklist');
     },
   },
 };

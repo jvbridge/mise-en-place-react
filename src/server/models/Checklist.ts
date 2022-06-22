@@ -1,6 +1,6 @@
 import { Schema, model, Document, Model, Types } from 'mongoose';
 
-interface ChecklistItem {
+export interface ChecklistItem {
   _id: Types.ObjectId;
   name: string;
   due?: Date;
