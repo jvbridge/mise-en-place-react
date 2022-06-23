@@ -50,8 +50,11 @@ const resolvers = {
           user: context.user._id,
         });
         const currUser = await User.findById(context.user._id);
-        currUser?.checklists.push(newChecklist._id);
-        await currUser?.save();
+        if (!currUser) {
+          throw new AuthenticationError('Invalid token found!');
+        }
+        currUser.checklists.push(newChecklist._id);
+        await currUser.save();
         return newChecklist;
       }
       throw new AuthenticationError('Must be logged in to add a checklist');
