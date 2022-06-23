@@ -4,6 +4,16 @@ import Checklist, { ChecklistItem } from '../models/Checklist';
 import { signToken } from '../util/auth';
 import { Types } from 'mongoose';
 
+/**
+ * A getter used for getting a checklsit. This is repeated enough to merit a
+ * small function
+ */
+const getChecklist = async (id: Types.ObjectId | string) => {
+  const ret = await Checklist.findById(id);
+  if (!ret) throw new UserInputError('could not find a checklist with that ID');
+  return ret;
+};
+
 const resolvers = {
   Query: {
     me: async (parent: any, args: any, context: any) => {
@@ -65,10 +75,7 @@ const resolvers = {
       context: any
     ) => {
       if (context.user) {
-        const currChecklist = await Checklist.findById(args.id);
-        if (!currChecklist) {
-          throw new UserInputError('could not find checklist with that ID');
-        }
+        const currChecklist = await getChecklist(args.id);
         const newChecklistItem: ChecklistItem = {
           name: args.itemName,
           done: false,
@@ -82,6 +89,15 @@ const resolvers = {
         return currChecklist.save();
       }
       throw new AuthenticationError('Must be logged in to modify a checklist');
+    },
+    // TODO: finish this function, possibly use mongoose helper
+    markItemDone: async (
+      parent: any,
+      args: { checklistId: string; itemId: string },
+      context: any
+    ) => {
+      const { checklistId, itemId } = args;
+      const currChecklist = await getChecklist(checklistId);
     },
   },
 };
