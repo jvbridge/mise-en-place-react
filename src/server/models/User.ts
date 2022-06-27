@@ -1,10 +1,11 @@
-import mongoose, { Schema, model, Document, Model } from 'mongoose';
+import { Schema, model, Document, Model, Types } from 'mongoose';
 import bcrypt = require('bcrypt');
 
 // define the interface
 interface UserDocument extends Document {
   email: string;
   password: string;
+  checklists: Types.ObjectId[];
 }
 
 // define the schema
@@ -14,13 +15,16 @@ const userSchema = new Schema<UserDocument>({
     required: true,
     unique: true,
     trim: true,
-    lowercase: true
+    lowercase: true,
   },
   password: {
     type: String,
     required: true,
-    minlength: 5
-  }
+    minlength: 5,
+  },
+  checklists: {
+    type: [{ type: Schema.Types.ObjectId, ref: 'Checklist' }],
+  },
 });
 
 // before making a new user or updating a user's password, ecrypt it
