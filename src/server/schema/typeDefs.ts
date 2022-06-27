@@ -14,12 +14,14 @@ const typeDefs = gql`
   }
 
   type ChecklistItem {
+    _id: ID!
     name: String!
     due: String
     done: Boolean!
   }
 
   type Checklist {
+    _id: ID!
     name: String!
     items: [ChecklistItem]
   }
