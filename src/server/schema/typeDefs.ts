@@ -35,8 +35,8 @@ const typeDefs = gql`
   type Mutation {
     addChecklist(name: String!): Checklist
     addChecklistItem(id: ID!, itemName: String!): Checklist
-    markItemDone(checklistId: ID!, itemId: ID!): ChecklistItem
-    markItemNotDone(checklistId: ID!, itemId: ID!): ChecklistItem
+    markItemDone(checklistId: ID!, itemId: ID!): Checklist
+    markItemNotDone(checklistId: ID!, itemId: ID!): Checklist
     addUser(email: String!, password: String!): Auth
     login(email: String!, password: String!): Auth
   }
