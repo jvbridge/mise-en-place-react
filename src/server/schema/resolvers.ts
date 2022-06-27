@@ -10,7 +10,7 @@ import { Types } from 'mongoose';
  */
 const getChecklist = async (id: Types.ObjectId | string) => {
   const ret = await Checklist.findById(id);
-  if (!ret) throw new UserInputError('could not find a checklist with that ID');
+  if (!ret) throw new UserInputError('Could not find a checklist with that ID');
   return ret;
 };
 
@@ -97,7 +97,29 @@ const resolvers = {
       context: any
     ) => {
       const { checklistId, itemId } = args;
+
+      // get the current item
       const currChecklist = await getChecklist(checklistId);
+      const currItem = currChecklist.items.find((item) => {
+        return item._id.toString() == itemId;
+      });
+      // no item? throw error
+      if (!currItem)
+        throw new UserInputError(
+          'Could not find a checklist item with that ID'
+        );
+
+      // mark the item as done
+      currItem.done = true;
+      // update the array of items with the new item
+      currChecklist.items = currChecklist.items.map((item) => {
+        if (item._id == currItem._id) {
+          return currItem;
+        }
+        return item;
+      });
+      // update the item and save it
+      return currChecklist.save();
     },
   },
 };
