@@ -88,6 +88,7 @@ const resolvers = {
       const token = signToken(user);
       return { token, user };
     },
+    // TODO: more tests
     addChecklist: async (parent: any, args: { name: string }, context: any) => {
       if (context.user) {
         const newChecklist = await Checklist.create({
@@ -100,7 +101,23 @@ const resolvers = {
         }
         currUser.checklists.push(newChecklist._id);
         await currUser.save();
-        return newChecklist;
+        return currUser.checklists;
+      }
+    },
+    removeChecklist: async (
+      parent: any,
+      args: { id: string | Types.ObjectId },
+      context: any
+    ) => {
+      // ensure login
+      if (context.user) {
+        // delete this checklist
+        await Checklist.findByIdAndDelete(args.id);
+
+        // get the current user from the database after they lost the checklist
+        const currUser = await User.findById(context.user._id);
+        if (!currUser) throw new UserInputError('Could not find user by Id');
+        return currUser.checklists;
       }
       throw new AuthenticationError('Must be logged in to add a checklist');
     },
