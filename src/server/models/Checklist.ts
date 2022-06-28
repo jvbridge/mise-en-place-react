@@ -22,12 +22,26 @@ const checklistSchema = new Schema<ChecklistDocument>({
   user: {
     type: Schema.Types.ObjectId,
     ref: 'User',
+    required: true,
   },
   items: [],
 });
 
+// when a checklist is new it must
+checklistSchema.pre('save', async function (next: Function) {
+  if (this.isNew) {
+    // find parent
+    const parentUser = await User.findById(this.user);
+    if (!parentUser) throw new Error('Could not find parent user');
+    // add this to parent's checklists
+    parentUser.checklists.push(this._id);
+    await parentUser.save();
+  }
+  next();
+});
+
 // before removing a checklist make sure that it removes itself from the user
-checklistSchema.pre('remove', async function (next) {
+checklistSchema.pre('remove', async function (next: Function) {
   // get the reference to the user
   const parentUser = await User.findById(this.user);
 
@@ -39,6 +53,7 @@ checklistSchema.pre('remove', async function (next) {
     list._id != this._id;
   });
   await parentUser.save();
+  next();
 });
 
 const Checklist: Model<ChecklistDocument> = model('Checklist', checklistSchema);
