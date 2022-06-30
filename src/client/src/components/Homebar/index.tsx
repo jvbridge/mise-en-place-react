@@ -21,16 +21,16 @@ function Homebar(/*{ loggedIn }: { loggedIn: boolean }*/) {
           <LinkContainer to={'/'}>
             <Nav.Link>Dashboard</Nav.Link>
           </LinkContainer>
-          <LinkContainer to={'/Calendar'}>
+          <LinkContainer to={'/calendar'}>
             <Nav.Link>Calendar</Nav.Link>
           </LinkContainer>
-          <LinkContainer to={'/Upcoming'}>
+          <LinkContainer to={'/upcoming'}>
             <Nav.Link>Upcoming</Nav.Link>
           </LinkContainer>
-          <LinkContainer to={'/Repeated'}>
+          <LinkContainer to={'/repeated'}>
             <Nav.Link>Repeated</Nav.Link>
           </LinkContainer>
-          <LinkContainer to={'/Checklist'}>
+          <LinkContainer to={'/checklist'}>
             <Nav.Link>Checklist</Nav.Link>
           </LinkContainer>
           {logOut}
