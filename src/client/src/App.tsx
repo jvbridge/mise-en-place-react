@@ -1,5 +1,12 @@
 // routing and backend connection
-import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client';
+import {
+  ApolloClient,
+  ApolloProvider,
+  InMemoryCache,
+  createHttpLink,
+} from '@apollo/client';
+import { setContext } from '@apollo/client/link/context';
+
 import {
   BrowserRouter as Router,
   Routes,
@@ -22,9 +29,26 @@ import Checklist from './components/Checklist';
 import auth from './util/auth';
 import { useState } from 'react';
 
+// specifying where to find graphql
+const httpLink = createHttpLink({
+  uri: '/grapql',
+});
+
+// setting context for authorization
+const authLink = setContext((_, { headers }) => {
+  // the appropriate jsx token
+  const token = auth.getToken();
+  return {
+    headers: {
+      ...headers,
+      authorization: token ? `Bearer ${token}` : '',
+    },
+  };
+});
+
 // apollo client initialization
 const client = new ApolloClient({
-  uri: '/graphql',
+  link: authLink.concat(httpLink),
   cache: new InMemoryCache(),
 });
 
