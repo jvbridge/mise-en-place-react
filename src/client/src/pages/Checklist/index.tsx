@@ -19,6 +19,7 @@ function ChecklistPage() {
     name: '',
   });
 
+  // TODO: use mutation, and usestate for the event (see login for similar code)
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
     console.log('create new list using name: ', newChecklistState.name);
