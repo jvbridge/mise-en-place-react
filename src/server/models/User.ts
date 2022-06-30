@@ -2,10 +2,11 @@ import { Schema, model, Document, Model, Types } from 'mongoose';
 import bcrypt = require('bcrypt');
 
 // define the interface
-interface UserDocument extends Document {
+export interface UserDocument extends Document {
   email: string;
   password: string;
   checklists: Types.ObjectId[];
+  isCorrectPassword: Function;
 }
 
 // define the schema
@@ -38,10 +39,10 @@ userSchema.pre('save', async function (next: Function) {
 
 // comparison method for getting the password
 userSchema.methods.isCorrectPassword = async function (password: string) {
-  return bcrypt.compare(password, this.password);
+  return await bcrypt.compare(password, this.password);
 };
 
 // make the schema into a model
-const User: Model<UserDocument> = model('User', userSchema);
+const User: Model<UserDocument> = model<UserDocument>('User', userSchema);
 
 export default User;

@@ -80,29 +80,60 @@ const resolvers = {
       parent: any,
       { email, password }: { email: string; password: string }
     ) => {
-      const user = await User.findOne({ email });
+      const user = await User.findOne({ email }).populate('checklists');
 
       if (!user) {
-        throw new AuthenticationError('No user found with this email!');
+        throw new AuthenticationError('Incorrect email or password');
+      }
+      const correctPassword = await user.isCorrectPassword(password);
+
+      if (!correctPassword) {
+        throw new AuthenticationError('Incorrect email or password');
       }
       const token = signToken(user);
       return { token, user };
     },
+
     addChecklist: async (parent: any, args: { name: string }, context: any) => {
       if (context.user) {
-        const newChecklist = await Checklist.create({
+        await Checklist.create({
           name: args.name,
           user: context.user._id,
         });
-        const currUser = await User.findById(context.user._id);
-        if (!currUser) {
-          throw new AuthenticationError('Invalid token found!');
-        }
-        currUser.checklists.push(newChecklist._id);
-        await currUser.save();
-        return newChecklist;
+        const currUser = await User.findById(context.user._id).populate(
+          'checklists'
+        );
+        if (!currUser)
+          throw new UserInputError(
+            'Current session could not find a user with current id'
+          );
+        return currUser.checklists;
       }
-      throw new AuthenticationError('Must be logged in to add a checklist');
+      throw new AuthenticationError(
+        'You must be logged in to create checklists'
+      );
+    },
+    removeChecklist: async (
+      parent: any,
+      args: { id: string | Types.ObjectId },
+      context: any
+    ) => {
+      // ensure login
+      if (context.user) {
+        // delete this checklist
+        await Checklist.findByIdAndDelete(args.id);
+
+        // get the current user from the database after they lost the checklist
+        const currUser = await User.findById(context.user._id).populate(
+          'checklists'
+        );
+        if (!currUser)
+          throw new UserInputError(
+            'Current session could not find a user with current id'
+          );
+        return currUser.checklists;
+      }
+      throw new AuthenticationError('Must be logged in to remove a checklist');
     },
     addChecklistItem: async (
       parent: any,
@@ -125,7 +156,6 @@ const resolvers = {
       }
       throw new AuthenticationError('Must be logged in to modify a checklist');
     },
-    // TODO: finish this function, possibly use mongoose helper
     markItemDone: async (
       parent: any,
       args: { checklistId: string; itemId: string },
