@@ -3,8 +3,11 @@ import { useQuery } from '@apollo/client';
 import { GET_CHECKLISTS } from '../../util/queries';
 
 function ChecklistPage() {
-  const { loading, data } = useQuery(GET_CHECKLISTS);
-  console.log('data: ', data);
+  const { loading, data, error } = useQuery(GET_CHECKLISTS);
+  const lists = data?.checklists || [];
+  if (data) console.log('data: ', data);
+  if (error) console.error('error: ', error);
+
   return (
     <div>
       {loading ? (
@@ -35,7 +38,7 @@ function ChecklistPage() {
                     </button>
                   </div>
 
-                  {data?.map((list: any) => {
+                  {lists?.map((list: any) => {
                     return (
                       <Checklist
                         checklistItems={list.items}

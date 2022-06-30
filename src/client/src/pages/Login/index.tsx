@@ -19,7 +19,10 @@ function Login() {
     useMutation(ADD_USER);
 
   // apollo mutation for logging in
-  const [login /*{ error: loginError, data: loginData }*/] = useMutation(LOGIN);
+  const [login, { error: loginError, data: loginData }] = useMutation(LOGIN);
+
+  console.log('Data we got from the login: ', loginData);
+  if (loginError) console.error('Errors we got from logging in: ', loginError);
 
   // the state for modal visibility
   const [showModal, setShowModal] = useState(false);
