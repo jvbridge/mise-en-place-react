@@ -54,7 +54,7 @@ const client = new ApolloClient({
 
 // main app
 function App() {
-  const [todos, setTodos] = useState([]);
+  const [todos] = useState([]);
 
   return (
     <ApolloProvider client={client}>
