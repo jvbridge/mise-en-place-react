@@ -12,6 +12,7 @@ import Login from './pages/Login';
 import Calendar from './pages/Calendar';
 import Dashboard from './pages/Dashboard';
 import NotFound from './pages/notFound';
+import ChecklistPage from './pages/Checklist';
 
 // components
 import Homebar from './components/Homebar';
@@ -44,6 +45,7 @@ function App() {
                   <Route path="/calendar" element={<Calendar />} />
                   <Route path="/dashboard" element={<Dashboard />} />
                   <Route path="/login" element={<Navigate to="/" />} />
+                  <Route path="/checklist" element={<ChecklistPage />} />
                   <Route path="/*" element={<NotFound />} />
                 </Routes>
               </div>
