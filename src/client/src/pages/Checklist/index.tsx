@@ -5,9 +5,14 @@ import { useState } from 'react';
 
 function ChecklistPage() {
   const { loading, data, error } = useQuery(GET_CHECKLISTS);
+
+  // the list of checklists
   const lists = data?.checklists || [];
+
+  // error printing if something happened bad with the server
   if (error) console.error('error: ', error);
 
+  // usestate for creating new checklists
   const [newChecklistState, setNewChecklistState] = useState({
     hidden: true,
     name: '',
@@ -50,9 +55,14 @@ function ChecklistPage() {
                       aria-describedby="button-addon2"
                       id="addInput"
                     />
-                    <button type="button" id="addon-btn"
-                      onClick={()=>{
-
+                    <button
+                      type="button"
+                      id="addon-btn"
+                      onClick={() => {
+                        console.log(
+                          'create new list using name: ',
+                          newChecklistState.name
+                        );
                       }}
                     >
                       Add List
