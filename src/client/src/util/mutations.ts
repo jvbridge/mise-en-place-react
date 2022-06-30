@@ -35,3 +35,17 @@ export const ADD_CHECKLIST = gql`
     }
   }
 `;
+
+export const REMOVE_CHECKLIST = gql`
+  mutation RemoveChecklist($removeChecklistId: ID!) {
+    removeChecklist(id: $removeChecklistId) {
+      name
+      _id
+      items {
+        name
+        done
+        _id
+      }
+    }
+  }
+`;
