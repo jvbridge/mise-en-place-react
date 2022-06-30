@@ -1,7 +1,8 @@
 import Checklist from '../../components/Checklist';
 import { useQuery } from '@apollo/client';
 import { GET_CHECKLISTS } from '../../util/queries';
-import { useState } from 'react';
+import { FormEvent, useState } from 'react';
+import { Form, FormControl } from 'react-bootstrap';
 
 function ChecklistPage() {
   const { loading, data, error } = useQuery(GET_CHECKLISTS);
@@ -17,6 +18,11 @@ function ChecklistPage() {
     hidden: true,
     name: '',
   });
+
+  const handleSubmit = (e: FormEvent) => {
+    e.preventDefault();
+    console.log('create new list using name: ', newChecklistState.name);
+  };
 
   return (
     <>
@@ -42,32 +48,27 @@ function ChecklistPage() {
                   </button>
                 </div>
                 <div className="checklist-form">
-                  <div
+                  <Form
+                    onSubmit={handleSubmit}
                     className="input-group mb-3"
                     id="addCheck-form"
                     hidden={newChecklistState.hidden}
                   >
-                    <input
+                    <FormControl
                       type="text"
                       className="form-control"
                       placeholder="New Checklist List"
                       aria-label="checklist-item"
                       aria-describedby="button-addon2"
-                      id="addInput"
                     />
                     <button
                       type="button"
-                      id="addon-btn"
-                      onClick={() => {
-                        console.log(
-                          'create new list using name: ',
-                          newChecklistState.name
-                        );
-                      }}
+                      className="addon-btn"
+                      onClick={handleSubmit}
                     >
                       Add List
                     </button>
-                  </div>
+                  </Form>
 
                   {lists?.map((list: any, index: number) => {
                     return (
