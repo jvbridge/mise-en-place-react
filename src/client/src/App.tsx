@@ -31,7 +31,7 @@ import { useState } from 'react';
 
 // specifying where to find graphql
 const httpLink = createHttpLink({
-  uri: '/grapql',
+  uri: '/graphql',
 });
 
 // setting context for authorization
