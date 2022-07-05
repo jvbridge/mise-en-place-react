@@ -45,7 +45,8 @@ function ChecklistPage() {
   // submission of new checklist creation form
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    console.log('create new list using name: ', newChecklistState.name);
+    // check if the checklist has an actual name
+    if (!newChecklistState.name) return;
     // send the server the update, propogate to the lists
     await addChecklist({
       variables: {
