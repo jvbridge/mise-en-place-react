@@ -1,5 +1,12 @@
 // routing and backend connection
-import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client';
+import {
+  ApolloClient,
+  ApolloProvider,
+  InMemoryCache,
+  createHttpLink,
+} from '@apollo/client';
+import { setContext } from '@apollo/client/link/context';
+
 import {
   BrowserRouter as Router,
   Routes,
@@ -12,6 +19,7 @@ import Login from './pages/Login';
 import Calendar from './pages/Calendar';
 import Dashboard from './pages/Dashboard';
 import NotFound from './pages/notFound';
+import ChecklistPage from './pages/Checklist';
 
 // components
 import Homebar from './components/Homebar';
@@ -21,15 +29,32 @@ import Checklist from './components/Checklist';
 import auth from './util/auth';
 import { useState } from 'react';
 
+// specifying where to find graphql
+const httpLink = createHttpLink({
+  uri: '/graphql',
+});
+
+// setting context for authorization
+const authLink = setContext((_, { headers }) => {
+  // the appropriate jsx token
+  const token = auth.getToken();
+  return {
+    headers: {
+      ...headers,
+      authorization: token ? `Bearer ${token}` : '',
+    },
+  };
+});
+
 // apollo client initialization
 const client = new ApolloClient({
-  uri: '/graphql',
+  link: authLink.concat(httpLink),
   cache: new InMemoryCache(),
 });
 
 // main app
 function App() {
-  const [todos, setTodos] = useState([]);
+  const [todos] = useState([]);
 
   return (
     <ApolloProvider client={client}>
@@ -44,6 +69,7 @@ function App() {
                   <Route path="/calendar" element={<Calendar />} />
                   <Route path="/dashboard" element={<Dashboard />} />
                   <Route path="/login" element={<Navigate to="/" />} />
+                  <Route path="/checklist" element={<ChecklistPage />} />
                   <Route path="/*" element={<NotFound />} />
                 </Routes>
               </div>

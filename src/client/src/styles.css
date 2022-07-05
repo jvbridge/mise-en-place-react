@@ -199,7 +199,7 @@ h5 {
   margin-bottom: 5px;
 }
 
-#addon-btn {
+.addon-btn {
   background-color: lightcoral;
   color: white;
   border: none;

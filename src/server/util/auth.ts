@@ -24,7 +24,6 @@ export const userDataJwtPayload = (jwtToken: string): User | undefined => {
     const { data } = <jwt.userDataJwtPayload>(
       jwt.verify(jwtToken, secret, { maxAge: expiration })
     );
-
     return data;
   } catch (error: any) {
     // data not decoded
