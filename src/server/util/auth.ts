@@ -21,7 +21,6 @@ declare module 'jsonwebtoken' {
 export const userDataJwtPayload = (jwtToken: string): User | undefined => {
   // try to decode the data
   try {
-    console.log('trying with token: ', jwtToken);
     const { data } = <jwt.userDataJwtPayload>(
       jwt.verify(jwtToken, secret, { maxAge: expiration })
     );
