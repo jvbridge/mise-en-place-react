@@ -9,9 +9,9 @@ export interface ChecklistProps {
 }
 
 export interface ChecklistItem {
+  _id: string;
   name: string;
   done: boolean;
-  time?: string;
 }
 
 function Checklist({ checklistItems, name, displayList, id }: ChecklistProps) {
@@ -39,6 +39,7 @@ function Checklist({ checklistItems, name, displayList, id }: ChecklistProps) {
           checklistItems.map((item) => {
             return (
               <ChecklistMember
+                id={item._id}
                 name={item.name}
                 done={item.done}
                 display={displayList}

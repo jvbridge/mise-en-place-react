@@ -5,12 +5,13 @@ export interface ChecklistItemProps {
   name: string;
   done: boolean;
   display: boolean;
+  id: string;
 }
 
 // TODO: import values
 
 function ChecklistMember(props: ChecklistItemProps) {
-  const { name, done } = props;
+  const { name, done, id } = props;
   const [checked, setChecked] = useState(done);
   return (
     <ListGroupItem className="to-do-item d-flex justify-content-between">
