@@ -37,8 +37,8 @@ export const ADD_CHECKLIST = gql`
 `;
 
 export const REMOVE_CHECKLIST = gql`
-  mutation RemoveChecklist($removeChecklistId: ID!) {
-    removeChecklist(id: $removeChecklistId) {
+  mutation RemoveChecklist($id: ID!) {
+    removeChecklist(id: $id) {
       name
       _id
       items {

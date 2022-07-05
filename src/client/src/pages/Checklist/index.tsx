@@ -3,7 +3,7 @@ import { useMutation, useQuery } from '@apollo/client';
 import { GET_CHECKLISTS } from '../../util/queries';
 import React, { FormEvent, useState } from 'react';
 import { Form, FormControl } from 'react-bootstrap';
-import { ADD_CHECKLIST } from '../../util/mutations';
+import { ADD_CHECKLIST, REMOVE_CHECKLIST } from '../../util/mutations';
 
 function ChecklistPage() {
   // the list of checklists
@@ -28,8 +28,17 @@ function ChecklistPage() {
   // Mutation for adding a new checklist
   const [addChecklist] = useMutation(ADD_CHECKLIST, {
     onCompleted: (data) => {
-      console.log('get data from mutation: ', data);
       setLists(data.addChecklist);
+    },
+  });
+
+  // Mutation for deleting a checklist
+  const [removeChecklist] = useMutation(REMOVE_CHECKLIST, {
+    onCompleted: (data) => {
+      setLists(data.removeChecklist);
+    },
+    onError: (error) => {
+      console.error('error with removing checklist: ', error);
     },
   });
 
@@ -54,6 +63,11 @@ function ChecklistPage() {
       hidden: newChecklistState.hidden,
       name: value,
     });
+  };
+
+  // handler for delete buttons deleting a list
+  const handleDelete = async (id: string) => {
+    await removeChecklist({ variables: { id } });
   };
 
   return (
@@ -106,12 +120,21 @@ function ChecklistPage() {
 
                   {lists.map((list: any, index: number) => {
                     return (
-                      <Checklist
-                        key={'list ' + index}
-                        checklistItems={list.items}
-                        name={list.name}
-                        displayList={false}
-                      />
+                      <div className="d-flex" key={'list ' + index}>
+                        <Checklist
+                          checklistItems={list.items}
+                          name={list.name}
+                          displayList={false}
+                        />
+                        <button
+                          className="btn btn-dark"
+                          onClick={() => {
+                            handleDelete(list._id);
+                          }}
+                        >
+                          Delete
+                        </button>
+                      </div>
                     );
                   })}
                 </div>
