@@ -125,6 +125,7 @@ function ChecklistPage() {
                           checklistItems={list.items}
                           name={list.name}
                           displayList={false}
+                          id={list._id}
                         />
                         <button
                           className="btn btn-dark"

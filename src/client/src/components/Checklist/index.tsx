@@ -5,6 +5,7 @@ export interface ChecklistProps {
   checklistItems: ChecklistItem[];
   name: string;
   displayList: boolean;
+  id: string;
 }
 
 export interface ChecklistItem {
@@ -13,7 +14,7 @@ export interface ChecklistItem {
   time?: string;
 }
 
-function Checklist({ checklistItems, name, displayList }: ChecklistProps) {
+function Checklist({ checklistItems, name, displayList, id }: ChecklistProps) {
   // conditional rendering for adding an item to the list
   let addItem;
 
