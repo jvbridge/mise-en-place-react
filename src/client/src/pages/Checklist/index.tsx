@@ -1,8 +1,9 @@
 import Checklist from '../../components/Checklist';
-import { useQuery } from '@apollo/client';
+import { useMutation, useQuery } from '@apollo/client';
 import { GET_CHECKLISTS } from '../../util/queries';
-import { FormEvent, useState } from 'react';
+import React, { FormEvent, useState } from 'react';
 import { Form, FormControl } from 'react-bootstrap';
+import { ADD_CHECKLIST } from '../../util/mutations';
 
 function ChecklistPage() {
   const { loading, data, error } = useQuery(GET_CHECKLISTS);
@@ -19,10 +20,30 @@ function ChecklistPage() {
     name: '',
   });
 
-  // TODO: use mutation, and usestate for the event (see login for similar code)
-  const handleSubmit = (e: FormEvent) => {
+  // Mutation for adding a new checklist
+  const [addChecklist] = useMutation(ADD_CHECKLIST);
+
+  // submission of new checklist creation form
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     console.log('create new list using name: ', newChecklistState.name);
+    // send the server the update
+    await addChecklist({
+      variables: {
+        name: newChecklistState.name,
+      },
+    });
+    // empty and hide the create new bar, also forces component to re-render
+    setNewChecklistState({ hidden: true, name: '' });
+  };
+
+  // handler for form that propogates value to usestate
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { value } = e.target;
+    setNewChecklistState({
+      hidden: newChecklistState.hidden,
+      name: value,
+    });
   };
 
   return (
@@ -58,9 +79,11 @@ function ChecklistPage() {
                     <FormControl
                       type="text"
                       className="form-control"
-                      placeholder="New Checklist List"
+                      placeholder="New Checklist Name"
                       aria-label="checklist-item"
                       aria-describedby="button-addon2"
+                      onChange={handleChange}
+                      value={newChecklistState.name}
                     />
                     <button
                       type="button"
