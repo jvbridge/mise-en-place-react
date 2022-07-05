@@ -112,6 +112,7 @@ function Checklist({ checklistItems, name, displayList, id }: ChecklistProps) {
                 name={item.name}
                 done={item.done}
                 display={displayList}
+                checklistId={id}
               />
             );
           })
