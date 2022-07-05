@@ -12,18 +12,26 @@ export interface ChecklistItemProps {
 // TODO: import values
 
 function ChecklistMember(props: ChecklistItemProps) {
-  const { name, done, id, checklistId } = props;
+  const { name, done, display, id, checklistId } = props;
   const [checked, setChecked] = useState(done);
+
   return (
-    <ListGroupItem className="to-do-item d-flex justify-content-between">
-      {name}
-      <input
-        className="form-check-input checklist-item-checkbox"
-        type="checkbox"
-        value=""
-        onChange={(e) => setChecked(e.currentTarget.checked)}
-        checked={checked}
-      />
+    <ListGroupItem style={{ padding: 0 }}>
+      <div className="d-flex  align-items-center to-do-item justify-items-between">
+        <input
+          className="form-check-input checklist-item-checkbox mx-1"
+          type="checkbox"
+          value=""
+          onChange={(e) => setChecked(e.currentTarget.checked)}
+          checked={checked}
+        />
+        <div className="p-2 ">{name}</div>
+        {display ? (
+          <></>
+        ) : (
+          <button className="addon-btn p-2">Delete item</button>
+        )}
+      </div>
     </ListGroupItem>
   );
 }
