@@ -152,7 +152,8 @@ const resolvers = {
           newChecklistItem.due = new Date(args.due);
         }
         currChecklist.items.push(newChecklistItem);
-        return currChecklist.save();
+        await currChecklist.save();
+        return currChecklist.items;
       }
       throw new AuthenticationError('Must be logged in to modify a checklist');
     },
