@@ -6,10 +6,15 @@ import { Form, FormControl } from 'react-bootstrap';
 import { ADD_CHECKLIST } from '../../util/mutations';
 
 function ChecklistPage() {
-  const { loading, data, error } = useQuery(GET_CHECKLISTS);
-
   // the list of checklists
-  const lists = data?.checklists || [];
+  const [lists, setLists] = useState([]);
+
+  // query to get the state
+  const { loading, error } = useQuery(GET_CHECKLISTS, {
+    onCompleted: (data) => {
+      setLists(data.checklists);
+    },
+  });
 
   // error printing if something happened bad with the server
   if (error) console.error('error: ', error);
@@ -21,19 +26,24 @@ function ChecklistPage() {
   });
 
   // Mutation for adding a new checklist
-  const [addChecklist] = useMutation(ADD_CHECKLIST);
+  const [addChecklist] = useMutation(ADD_CHECKLIST, {
+    onCompleted: (data) => {
+      console.log('get data from mutation: ', data);
+      setLists(data.addChecklist);
+    },
+  });
 
   // submission of new checklist creation form
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     console.log('create new list using name: ', newChecklistState.name);
-    // send the server the update
+    // send the server the update, propogate to the lists
     await addChecklist({
       variables: {
         name: newChecklistState.name,
       },
     });
-    // empty and hide the create new bar, also forces component to re-render
+    // empty and hide the create new bar
     setNewChecklistState({ hidden: true, name: '' });
   };
 
@@ -94,10 +104,10 @@ function ChecklistPage() {
                     </button>
                   </Form>
 
-                  {lists?.map((list: any, index: number) => {
+                  {lists.map((list: any, index: number) => {
                     return (
                       <Checklist
-                        key={'list' + index}
+                        key={'list ' + index}
                         checklistItems={list.items}
                         name={list.name}
                         displayList={false}
