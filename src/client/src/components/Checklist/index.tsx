@@ -1,6 +1,8 @@
+import { useMutation } from '@apollo/client';
 import React, { FormEvent, useState } from 'react';
 import { Card, ListGroup, Form, FormControl } from 'react-bootstrap';
 import ChecklistMember from './ChecklistMember';
+import { ADD_CHECKLIST_ITEM } from '../../util/mutations';
 
 export interface ChecklistProps {
   checklistItems: ChecklistItem[];
@@ -19,10 +21,31 @@ function Checklist({ checklistItems, name, displayList, id }: ChecklistProps) {
   // usestate for adding new items to the list
   const [newItem, setNewItem] = useState({ name: '', hidden: true });
 
+  // import checklist items from parent, make a usestate for it
+  const [items, setItems] = useState(checklistItems);
+
+  // mutation for adding new items to a checklist
+  const [addItem] = useMutation(ADD_CHECKLIST_ITEM, {
+    // propogate the new items to our usestate
+    onCompleted: (data) => {
+      setItems(data.addChecklistItem);
+    },
+  });
+
   // submission for handling a new item on the checklists
-  const handleSubmit = (e: FormEvent) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     console.log('submitting: ', newItem.name);
+    console.log("item's id: ", id);
+    // make sure we have an item to submit
+    if (!newItem.name) return;
+
+    // send the gql state for the item
+    await addItem({
+      variables: { itemName: newItem.name, addChecklistItemId: id },
+    });
+
+    // empty the form and hide it
     setNewItem({ name: '', hidden: true });
   };
 
@@ -36,10 +59,10 @@ function Checklist({ checklistItems, name, displayList, id }: ChecklistProps) {
   };
 
   // conditional rendering for adding an item to the list (for display lists)
-  let addItem;
+  let addItemDisplay;
 
   if (!displayList) {
-    addItem = (
+    addItemDisplay = (
       <button
         className="link-button plus"
         onClick={() => {
@@ -59,7 +82,7 @@ function Checklist({ checklistItems, name, displayList, id }: ChecklistProps) {
       <Card.Header className="to-do-card-header">
         <div className="d-flex justify-content-between">
           {name}
-          {addItem}
+          {addItemDisplay}
         </div>
       </Card.Header>
       <Form
@@ -80,8 +103,8 @@ function Checklist({ checklistItems, name, displayList, id }: ChecklistProps) {
         </button>
       </Form>
       <ListGroup variant="flush">
-        {checklistItems.length ? (
-          checklistItems.map((item, index) => {
+        {items.length ? (
+          items.map((item, index) => {
             return (
               <ChecklistMember
                 key={`List ${id}, item ${index}`}
