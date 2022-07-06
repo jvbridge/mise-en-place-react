@@ -89,3 +89,13 @@ export const MARK_ITEM_NOT_DONE = gql`
     }
   }
 `;
+
+export const MARK_ALL_NOT_DONE = gql`
+  mutation MarkAllNotDone($checklistId: ID!) {
+    markAllNotDone(checklistId: $checklistId) {
+      _id
+      name
+      done
+    }
+  }
+`;

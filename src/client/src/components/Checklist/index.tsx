@@ -12,6 +12,7 @@ import {
   REMOVE_CHECKLIST_ITEM,
   MARK_ITEM_DONE,
   MARK_ITEM_NOT_DONE,
+  MARK_ALL_NOT_DONE,
 } from '../../util/mutations';
 
 export interface ChecklistProps {
@@ -62,6 +63,11 @@ function Checklist({ checklistItems, name, displayList, id }: ChecklistProps) {
     },
   });
 
+  const [setAllNotDone] = useMutation(MARK_ALL_NOT_DONE, {
+    onCompleted: (data) => {
+      setItems(data.markAllNotDone);
+    },
+  });
   // submission for handling adding a new item on the checklists
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
@@ -194,7 +200,16 @@ function Checklist({ checklistItems, name, displayList, id }: ChecklistProps) {
           <li className="list-group-item to-do-item">No items yet!</li>
         )}
       </ListGroup>
-      <button className="btn" onClick={() => {}}>
+      <button
+        className="btn"
+        onClick={() => {
+          setAllNotDone({
+            variables: {
+              checklistId: id,
+            },
+          });
+        }}
+      >
         Mark all not done
       </button>
     </Card>
