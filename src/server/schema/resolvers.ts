@@ -46,7 +46,8 @@ const markChecklistItem = async (
     return item;
   });
   // update the item and save it
-  return currChecklist.save();
+  await currChecklist.save();
+  return currChecklist.items;
 };
 
 const resolvers = {
