@@ -49,8 +49,6 @@ function Checklist({ checklistItems, name, displayList, id }: ChecklistProps) {
   // submission for handling a new item on the checklists
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    console.log('submitting: ', newItem.name);
-    console.log("item's id: ", id);
     // make sure we have an item to submit
     if (!newItem.name) return;
 
@@ -133,9 +131,9 @@ function Checklist({ checklistItems, name, displayList, id }: ChecklistProps) {
                 key={`List ${id}, item ${index}`}
                 style={{ padding: 0 }}
               >
-                <div className="d-flex  align-items-center to-do-item">
+                <div className="d-flex align-items-center to-do-item">
                   <input
-                    className="form-check-input checklist-item-checkbox mx-1"
+                    className="form-check-input checklist-item-checkbox mx-3"
                     type="checkbox"
                     onChange={(e) =>
                       console.log('setting checked for: ', item._id)
