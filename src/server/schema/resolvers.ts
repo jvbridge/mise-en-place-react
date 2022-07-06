@@ -29,22 +29,26 @@ const markChecklistItem = async (
 ) => {
   // get the current item
   const currChecklist = await getChecklist(checklistId);
-  const currItem = currChecklist.items.find((item) => {
-    return item._id.toString() == itemId;
-  });
-  // no item? throw error
-  if (!currItem)
-    throw new UserInputError('Could not find a checklist item with that ID');
 
-  // mark the item as done
-  currItem.done = markValue;
-  // update the array of items with the new item
+  // flag to ensure we found an item
+  let updateFlag = false;
+
+  // iterate over the array overwriting one item
   currChecklist.items = currChecklist.items.map((item) => {
-    if (item._id == currItem._id) {
-      return currItem;
+    if (item._id.toString() == itemId) {
+      item.done = markValue;
+      updateFlag = true;
+      console.log('updating item with new value: ', item);
+      return item;
     }
     return item;
   });
+
+  if (!updateFlag)
+    throw new UserInputError('Could not find a checklist item with that ID');
+
+  // letting the db know we intend to update this
+  currChecklist.markModified('items');
   // update the item and save it
   await currChecklist.save();
   return currChecklist.items;
@@ -204,7 +208,7 @@ const resolvers = {
     ) => {
       const { checklistId, itemId } = args;
       // hand off the work to helper function
-      return markChecklistItem(checklistId, itemId, true);
+      return await markChecklistItem(checklistId, itemId, true);
     },
     markItemNotDone: async (
       parent: any,
@@ -213,7 +217,7 @@ const resolvers = {
     ) => {
       const { checklistId, itemId } = args;
       // hand off the work to helper function
-      return markChecklistItem(checklistId, itemId, false);
+      return await markChecklistItem(checklistId, itemId, false);
     },
   },
 };

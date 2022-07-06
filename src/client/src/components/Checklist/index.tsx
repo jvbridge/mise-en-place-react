@@ -49,6 +49,19 @@ function Checklist({ checklistItems, name, displayList, id }: ChecklistProps) {
     },
   });
 
+  // mutations for marking items done or not done
+  const [setItemDone] = useMutation(MARK_ITEM_DONE, {
+    onCompleted: (data) => {
+      setItems(data.markItemDone);
+    },
+  });
+
+  const [setItemNotDone] = useMutation(MARK_ITEM_NOT_DONE, {
+    onCompleted: (data) => {
+      setItems(data.markItemNotDone);
+    },
+  });
+
   // submission for handling adding a new item on the checklists
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
@@ -84,7 +97,21 @@ function Checklist({ checklistItems, name, displayList, id }: ChecklistProps) {
   };
 
   // handler for toggling the state of an item on a list
-  const toggleItem = async (itemId: string, done: boolean) => {};
+  const toggleItem = async (itemId: string, done: boolean) => {
+    done
+      ? setItemDone({
+          variables: {
+            checklistId: id,
+            itemId,
+          },
+        })
+      : setItemNotDone({
+          variables: {
+            checklistId: id,
+            itemId,
+          },
+        });
+  };
 
   // conditional rendering for adding an item to the list (for display lists)
   let addItemDisplay;
@@ -106,6 +133,7 @@ function Checklist({ checklistItems, name, displayList, id }: ChecklistProps) {
   }
 
   return (
+    // the whole checklist is a bootstrap Card
     <Card className="to-do-card" style={{ width: '100%' }}>
       <Card.Header className="to-do-card-header">
         <div className="d-flex justify-content-between">
@@ -113,6 +141,7 @@ function Checklist({ checklistItems, name, displayList, id }: ChecklistProps) {
           {addItemDisplay}
         </div>
       </Card.Header>
+      {/* conditionally rendered section for adding new items */}
       <Form
         onSubmit={handleSubmit}
         className="input-group"
@@ -130,6 +159,7 @@ function Checklist({ checklistItems, name, displayList, id }: ChecklistProps) {
           Add Item
         </button>
       </Form>
+      {/* list group of all items */}
       <ListGroup variant="flush">
         {items.length ? (
           items.map((item, index) => {
