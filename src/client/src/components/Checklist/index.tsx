@@ -1,8 +1,16 @@
 import { useMutation } from '@apollo/client';
 import React, { FormEvent, useState } from 'react';
-import { Card, ListGroup, Form, FormControl } from 'react-bootstrap';
-import ChecklistMember from './ChecklistMember';
-import { ADD_CHECKLIST_ITEM } from '../../util/mutations';
+import {
+  Card,
+  ListGroup,
+  Form,
+  FormControl,
+  ListGroupItem,
+} from 'react-bootstrap';
+import {
+  ADD_CHECKLIST_ITEM,
+  REMOVE_CHECKLIST_ITEM,
+} from '../../util/mutations';
 
 export interface ChecklistProps {
   checklistItems: ChecklistItem[];
@@ -32,6 +40,12 @@ function Checklist({ checklistItems, name, displayList, id }: ChecklistProps) {
     },
   });
 
+  const [removeItem] = useMutation(REMOVE_CHECKLIST_ITEM, {
+    onCompleted: (data) => {
+      setItems(data.removeChecklistItem);
+    },
+  });
+
   // submission for handling a new item on the checklists
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
@@ -55,6 +69,15 @@ function Checklist({ checklistItems, name, displayList, id }: ChecklistProps) {
     setNewItem({
       hidden: newItem.hidden,
       name: value,
+    });
+  };
+
+  const deleteItem = async (itemId: string) => {
+    await removeItem({
+      variables: {
+        checklistId: id,
+        itemId,
+      },
     });
   };
 
@@ -106,14 +129,32 @@ function Checklist({ checklistItems, name, displayList, id }: ChecklistProps) {
         {items.length ? (
           items.map((item, index) => {
             return (
-              <ChecklistMember
+              <ListGroupItem
                 key={`List ${id}, item ${index}`}
-                id={item._id}
-                name={item.name}
-                done={item.done}
-                display={displayList}
-                checklistId={id}
-              />
+                style={{ padding: 0 }}
+              >
+                <div className="d-flex  align-items-center to-do-item">
+                  <input
+                    className="form-check-input checklist-item-checkbox mx-1"
+                    type="checkbox"
+                    onChange={(e) =>
+                      console.log('setting checked for: ', item._id)
+                    }
+                    checked={item.done}
+                  />
+                  <div className="flex-fill">{item.name}</div>
+                  {displayList ? (
+                    <></>
+                  ) : (
+                    <button
+                      className="addon-btn p-2"
+                      onClick={() => deleteItem(item._id)}
+                    >
+                      Delete item
+                    </button>
+                  )}
+                </div>
+              </ListGroupItem>
             );
           })
         ) : (
