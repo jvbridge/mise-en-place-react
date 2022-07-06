@@ -242,6 +242,10 @@ const resolvers = {
         item.done = false;
         return item;
       });
+
+      currChecklist.markModified('items');
+      await currChecklist.save();
+      return currChecklist.items;
     },
   },
 };

@@ -39,6 +39,7 @@ const typeDefs = gql`
     removeChecklistItem(checklistId: ID!, itemId: ID!): [ChecklistItem]
     markItemDone(checklistId: ID!, itemId: ID!): [ChecklistItem]
     markItemNotDone(checklistId: ID!, itemId: ID!): [ChecklistItem]
+    markAllNotDone(checklistId: ID!): [ChecklistItem]
     addUser(email: String!, password: String!): Auth
     login(email: String!, password: String!): Auth
   }
