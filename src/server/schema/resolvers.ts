@@ -38,7 +38,6 @@ const markChecklistItem = async (
     if (item._id.toString() == itemId) {
       item.done = markValue;
       updateFlag = true;
-      console.log('updating item with new value: ', item);
       return item;
     }
     return item;
