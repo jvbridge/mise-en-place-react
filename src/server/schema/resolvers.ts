@@ -8,9 +8,16 @@ import { Types } from 'mongoose';
  * A getter used for getting a checklist. This is repeated enough to merit a
  * small function
  */
-const getChecklist = async (id: Types.ObjectId | string) => {
+const getChecklist = async (id: Types.ObjectId | string, userId: string) => {
   const ret = await Checklist.findById(id);
   if (!ret) throw new UserInputError('Could not find a checklist with that ID');
+
+  if (ret.user.toString() != userId) {
+    throw new AuthenticationError(
+      'User does not have authorization to modify checklist'
+    );
+  }
+
   return ret;
 };
 
@@ -25,10 +32,11 @@ const getChecklist = async (id: Types.ObjectId | string) => {
 const markChecklistItem = async (
   checklistId: string,
   itemId: string,
-  markValue: boolean
+  markValue: boolean,
+  userId: string
 ) => {
   // get the current item
-  const currChecklist = await getChecklist(checklistId);
+  const currChecklist = await getChecklist(checklistId, userId);
 
   // flag to ensure we found an item
   let updateFlag = false;
@@ -157,13 +165,7 @@ const resolvers = {
       context: any
     ) => {
       if (context.user) {
-        const currChecklist = await getChecklist(args.id);
-
-        if (currChecklist.user.toString() != context.user._id) {
-          throw new AuthenticationError(
-            'User does not have authorization to modify checklist'
-          );
-        }
+        const currChecklist = await getChecklist(args.id, context.user._id);
 
         const newChecklistItem: ChecklistItem = {
           name: args.itemName,
@@ -186,12 +188,11 @@ const resolvers = {
       context: any
     ) => {
       if (context.user) {
-        const currChecklist = await getChecklist(args.checklistId);
-        if (currChecklist.user.toString() != context.user._id) {
-          throw new AuthenticationError(
-            'User does not have authorization to modify checklist'
-          );
-        }
+        const currChecklist = await getChecklist(
+          args.checklistId,
+          context.user._id
+        );
+
         currChecklist.items = currChecklist.items.filter(
           (item) => item._id.toString() != args.itemId
         );
@@ -207,7 +208,12 @@ const resolvers = {
     ) => {
       const { checklistId, itemId } = args;
       // hand off the work to helper function
-      return await markChecklistItem(checklistId, itemId, true);
+      return await markChecklistItem(
+        checklistId,
+        itemId,
+        true,
+        context.user._id
+      );
     },
     markItemNotDone: async (
       parent: any,
@@ -216,7 +222,26 @@ const resolvers = {
     ) => {
       const { checklistId, itemId } = args;
       // hand off the work to helper function
-      return await markChecklistItem(checklistId, itemId, false);
+      return await markChecklistItem(
+        checklistId,
+        itemId,
+        false,
+        context.user._id
+      );
+    },
+    markAllNotDone: async (
+      parent: any,
+      args: { checklistId: string },
+      context: any
+    ) => {
+      const currChecklist = await getChecklist(
+        args.checklistId,
+        context.user._id
+      );
+      currChecklist.items = currChecklist.items.map((item) => {
+        item.done = false;
+        return item;
+      });
     },
   },
 };
