@@ -15,6 +15,7 @@ export const GET_CHECKLISTS = gql`
       items {
         name
         _id
+        done
       }
       _id
     }

@@ -5,12 +5,19 @@ import { signToken } from '../util/auth';
 import { Types } from 'mongoose';
 
 /**
- * A getter used for getting a checklsit. This is repeated enough to merit a
+ * A getter used for getting a checklist. This is repeated enough to merit a
  * small function
  */
-const getChecklist = async (id: Types.ObjectId | string) => {
+const getChecklist = async (id: Types.ObjectId | string, userId: string) => {
   const ret = await Checklist.findById(id);
   if (!ret) throw new UserInputError('Could not find a checklist with that ID');
+
+  if (ret.user.toString() != userId) {
+    throw new AuthenticationError(
+      'User does not have authorization to modify checklist'
+    );
+  }
+
   return ret;
 };
 
@@ -25,28 +32,33 @@ const getChecklist = async (id: Types.ObjectId | string) => {
 const markChecklistItem = async (
   checklistId: string,
   itemId: string,
-  markValue: boolean
+  markValue: boolean,
+  userId: string
 ) => {
   // get the current item
-  const currChecklist = await getChecklist(checklistId);
-  const currItem = currChecklist.items.find((item) => {
-    return item._id.toString() == itemId;
-  });
-  // no item? throw error
-  if (!currItem)
-    throw new UserInputError('Could not find a checklist item with that ID');
+  const currChecklist = await getChecklist(checklistId, userId);
 
-  // mark the item as done
-  currItem.done = markValue;
-  // update the array of items with the new item
+  // flag to ensure we found an item
+  let updateFlag = false;
+
+  // iterate over the array overwriting one item
   currChecklist.items = currChecklist.items.map((item) => {
-    if (item._id == currItem._id) {
-      return currItem;
+    if (item._id.toString() == itemId) {
+      item.done = markValue;
+      updateFlag = true;
+      return item;
     }
     return item;
   });
+
+  if (!updateFlag)
+    throw new UserInputError('Could not find a checklist item with that ID');
+
+  // letting the db know we intend to update this
+  currChecklist.markModified('items');
   // update the item and save it
-  return currChecklist.save();
+  await currChecklist.save();
+  return currChecklist.items;
 };
 
 const resolvers = {
@@ -115,13 +127,25 @@ const resolvers = {
     },
     removeChecklist: async (
       parent: any,
-      args: { id: string | Types.ObjectId },
+      args: { id: string },
       context: any
     ) => {
       // ensure login
       if (context.user) {
         // delete this checklist
-        await Checklist.findByIdAndDelete(args.id);
+        const currChecklist = await Checklist.findById(args.id);
+
+        // validating input
+        if (!currChecklist)
+          throw new UserInputError('Did not find checklist with that ID');
+
+        if (currChecklist.user.toString() != context.user._id)
+          throw new AuthenticationError(
+            'Checklist does not belong to current user'
+          );
+
+        // deleting checklist
+        await currChecklist.delete();
 
         // get the current user from the database after they lost the checklist
         const currUser = await User.findById(context.user._id).populate(
@@ -141,7 +165,8 @@ const resolvers = {
       context: any
     ) => {
       if (context.user) {
-        const currChecklist = await getChecklist(args.id);
+        const currChecklist = await getChecklist(args.id, context.user._id);
+
         const newChecklistItem: ChecklistItem = {
           name: args.itemName,
           done: false,
@@ -152,7 +177,27 @@ const resolvers = {
           newChecklistItem.due = new Date(args.due);
         }
         currChecklist.items.push(newChecklistItem);
-        return currChecklist.save();
+        await currChecklist.save();
+        return currChecklist.items;
+      }
+      throw new AuthenticationError('Must be logged in to modify a checklist');
+    },
+    removeChecklistItem: async (
+      parent: any,
+      args: { checklistId: string; itemId: string },
+      context: any
+    ) => {
+      if (context.user) {
+        const currChecklist = await getChecklist(
+          args.checklistId,
+          context.user._id
+        );
+
+        currChecklist.items = currChecklist.items.filter(
+          (item) => item._id.toString() != args.itemId
+        );
+        await currChecklist.save();
+        return currChecklist.items;
       }
       throw new AuthenticationError('Must be logged in to modify a checklist');
     },
@@ -163,7 +208,12 @@ const resolvers = {
     ) => {
       const { checklistId, itemId } = args;
       // hand off the work to helper function
-      return markChecklistItem(checklistId, itemId, true);
+      return await markChecklistItem(
+        checklistId,
+        itemId,
+        true,
+        context.user._id
+      );
     },
     markItemNotDone: async (
       parent: any,
@@ -172,7 +222,30 @@ const resolvers = {
     ) => {
       const { checklistId, itemId } = args;
       // hand off the work to helper function
-      return markChecklistItem(checklistId, itemId, false);
+      return await markChecklistItem(
+        checklistId,
+        itemId,
+        false,
+        context.user._id
+      );
+    },
+    markAllNotDone: async (
+      parent: any,
+      args: { checklistId: string },
+      context: any
+    ) => {
+      const currChecklist = await getChecklist(
+        args.checklistId,
+        context.user._id
+      );
+      currChecklist.items = currChecklist.items.map((item) => {
+        item.done = false;
+        return item;
+      });
+
+      currChecklist.markModified('items');
+      await currChecklist.save();
+      return currChecklist.items;
     },
   },
 };

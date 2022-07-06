@@ -235,9 +235,10 @@ i {
   margin-bottom: 2em;
 }
 
-/* .to-do-item {
-      background-color: rgb(160, 255, 160);
-  } */
+.to-do-item {
+  /* background-color: rgb(160, 255, 160); */
+  background-color: white;
+}
 
 .missed-card {
   margin-bottom: 2em;
