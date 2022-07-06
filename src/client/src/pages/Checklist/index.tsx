@@ -1,8 +1,9 @@
 import Checklist from '../../components/Checklist';
-import { useMutation, useQuery } from '@apollo/client';
-import { GET_CHECKLISTS } from '../../util/queries';
 import React, { FormEvent, useState } from 'react';
 import { Form, FormControl } from 'react-bootstrap';
+import Swal from 'sweetalert2';
+import { useMutation, useQuery } from '@apollo/client';
+import { GET_CHECKLISTS } from '../../util/queries';
 import { ADD_CHECKLIST, REMOVE_CHECKLIST } from '../../util/mutations';
 
 function ChecklistPage() {
@@ -68,7 +69,21 @@ function ChecklistPage() {
 
   // handler for delete buttons deleting a list
   const handleDelete = async (id: string) => {
-    await removeChecklist({ variables: { id } });
+    console.log('deleting list: ', id);
+    const result = await Swal.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!',
+    });
+
+    if (result.isConfirmed) {
+      await removeChecklist({ variables: { id } });
+      Swal.fire('Deleted!', 'Your checklist has been deleted.', 'success');
+    }
   };
 
   return (

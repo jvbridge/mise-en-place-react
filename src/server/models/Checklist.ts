@@ -49,9 +49,10 @@ checklistSchema.pre('remove', async function (next: Function) {
   if (!parentUser) throw new Error('could not find parent user');
 
   // remove the current checklist from the parent's checklists
-  parentUser.checklists = parentUser.checklists.filter((list) => {
-    list._id != this._id;
+  parentUser.checklists = parentUser.checklists.filter((listId) => {
+    return listId != this._id;
   });
+
   await parentUser.save();
   next();
 });
