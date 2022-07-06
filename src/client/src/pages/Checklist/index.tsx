@@ -1,8 +1,9 @@
 import Checklist from '../../components/Checklist';
-import { useMutation, useQuery } from '@apollo/client';
-import { GET_CHECKLISTS } from '../../util/queries';
 import React, { FormEvent, useState } from 'react';
 import { Form, FormControl } from 'react-bootstrap';
+import Swal from 'sweetalert2';
+import { useMutation, useQuery } from '@apollo/client';
+import { GET_CHECKLISTS } from '../../util/queries';
 import { ADD_CHECKLIST, REMOVE_CHECKLIST } from '../../util/mutations';
 
 function ChecklistPage() {
