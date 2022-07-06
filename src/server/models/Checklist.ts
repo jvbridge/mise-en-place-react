@@ -48,14 +48,10 @@ checklistSchema.pre('remove', async function (next: Function) {
   // the checklist must have a parent user
   if (!parentUser) throw new Error('could not find parent user');
 
-  console.log('parent lists pre filter: ', parentUser.checklists);
-
   // remove the current checklist from the parent's checklists
   parentUser.checklists = parentUser.checklists.filter((listId) => {
     return listId != this._id;
   });
-
-  console.log('parent lists post filter: ', parentUser.checklists);
 
   await parentUser.save();
   next();
