@@ -10,6 +10,8 @@ import {
 import {
   ADD_CHECKLIST_ITEM,
   REMOVE_CHECKLIST_ITEM,
+  MARK_ITEM_DONE,
+  MARK_ITEM_NOT_DONE,
 } from '../../util/mutations';
 
 export interface ChecklistProps {
@@ -40,13 +42,14 @@ function Checklist({ checklistItems, name, displayList, id }: ChecklistProps) {
     },
   });
 
+  // mutation for removing an item from the checklist
   const [removeItem] = useMutation(REMOVE_CHECKLIST_ITEM, {
     onCompleted: (data) => {
       setItems(data.removeChecklistItem);
     },
   });
 
-  // submission for handling a new item on the checklists
+  // submission for handling adding a new item on the checklists
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     // make sure we have an item to submit
@@ -70,6 +73,7 @@ function Checklist({ checklistItems, name, displayList, id }: ChecklistProps) {
     });
   };
 
+  // handler for deleting individual items from a checklist
   const deleteItem = async (itemId: string) => {
     await removeItem({
       variables: {
@@ -78,6 +82,9 @@ function Checklist({ checklistItems, name, displayList, id }: ChecklistProps) {
       },
     });
   };
+
+  // handler for toggling the state of an item on a list
+  const toggleItem = async (itemId: string, done: boolean) => {};
 
   // conditional rendering for adding an item to the list (for display lists)
   let addItemDisplay;
@@ -135,9 +142,7 @@ function Checklist({ checklistItems, name, displayList, id }: ChecklistProps) {
                   <input
                     className="form-check-input checklist-item-checkbox mx-3"
                     type="checkbox"
-                    onChange={(e) =>
-                      console.log('setting checked for: ', item._id)
-                    }
+                    onChange={(e) => toggleItem(item._id, e.target.checked)}
                     checked={item.done}
                   />
                   <div className="flex-fill">{item.name}</div>
