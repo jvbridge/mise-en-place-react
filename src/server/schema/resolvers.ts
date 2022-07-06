@@ -5,7 +5,7 @@ import { signToken } from '../util/auth';
 import { Types } from 'mongoose';
 
 /**
- * A getter used for getting a checklsit. This is repeated enough to merit a
+ * A getter used for getting a checklist. This is repeated enough to merit a
  * small function
  */
 const getChecklist = async (id: Types.ObjectId | string) => {
@@ -115,13 +115,25 @@ const resolvers = {
     },
     removeChecklist: async (
       parent: any,
-      args: { id: string | Types.ObjectId },
+      args: { id: string },
       context: any
     ) => {
       // ensure login
       if (context.user) {
         // delete this checklist
-        await Checklist.findByIdAndDelete(args.id);
+        const currChecklist = await Checklist.findById(args.id);
+
+        // validating input
+        if (!currChecklist)
+          throw new UserInputError('Did not find checklist with that ID');
+
+        if (currChecklist.user.toString() != context.user._id)
+          throw new AuthenticationError(
+            'Checklist does not belong to current user'
+          );
+
+        // deleting checklist
+        await currChecklist.delete();
 
         // get the current user from the database after they lost the checklist
         const currUser = await User.findById(context.user._id).populate(
@@ -142,6 +154,13 @@ const resolvers = {
     ) => {
       if (context.user) {
         const currChecklist = await getChecklist(args.id);
+
+        if (currChecklist.user.toString() != context.user._id) {
+          throw new AuthenticationError(
+            'User does not have authorization to modify checklist'
+          );
+        }
+
         const newChecklistItem: ChecklistItem = {
           name: args.itemName,
           done: false,
@@ -152,6 +171,26 @@ const resolvers = {
           newChecklistItem.due = new Date(args.due);
         }
         currChecklist.items.push(newChecklistItem);
+        await currChecklist.save();
+        return currChecklist.items;
+      }
+      throw new AuthenticationError('Must be logged in to modify a checklist');
+    },
+    removeChecklistItem: async (
+      parent: any,
+      args: { checklistId: string; itemId: string },
+      context: any
+    ) => {
+      if (context.user) {
+        const currChecklist = await getChecklist(args.checklistId);
+        if (currChecklist.user.toString() != context.user._id) {
+          throw new AuthenticationError(
+            'User does not have authorization to modify checklist'
+          );
+        }
+        currChecklist.items = currChecklist.items.filter(
+          (item) => item._id.toString() != args.itemId
+        );
         await currChecklist.save();
         return currChecklist.items;
       }
