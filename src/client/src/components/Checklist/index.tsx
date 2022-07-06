@@ -194,6 +194,9 @@ function Checklist({ checklistItems, name, displayList, id }: ChecklistProps) {
           <li className="list-group-item to-do-item">No items yet!</li>
         )}
       </ListGroup>
+      <button className="btn" onClick={() => {}}>
+        Mark all not done
+      </button>
     </Card>
   );
 }
