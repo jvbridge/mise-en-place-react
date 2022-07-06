@@ -69,3 +69,23 @@ export const REMOVE_CHECKLIST_ITEM = gql`
     }
   }
 `;
+
+export const MARK_ITEM_DONE = gql`
+  mutation MarkItemDone($checklistId: ID!, $itemId: ID!) {
+    markItemDone(checklistId: $checklistId, itemId: $itemId) {
+      _id
+      name
+      done
+    }
+  }
+`;
+
+export const MARK_ITEM_NOT_DONE = gql`
+  mutation MarkItemNotDone($checklistId: ID!, $itemId: ID!) {
+    markItemNotDone(checklistId: $checklistId, itemId: $itemId) {
+      _id
+      name
+      done
+    }
+  }
+`;
