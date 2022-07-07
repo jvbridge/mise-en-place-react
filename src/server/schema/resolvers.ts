@@ -137,18 +137,8 @@ const resolvers = {
     ) => {
       // ensure login
       if (context.user) {
-        // delete this checklist
-        const currChecklist = await Checklist.findById(args.id);
-
-        // validating input
-        if (!currChecklist)
-          throw new UserInputError('Did not find checklist with that ID');
-
-        if (currChecklist.user.toString() != context.user._id)
-          throw new AuthenticationError(
-            'Checklist does not belong to current user'
-          );
-
+        // get the checkelist to delete
+        const currChecklist = await getChecklist(args.id, context.user._id);
         // deleting checklist
         await currChecklist.delete();
 
