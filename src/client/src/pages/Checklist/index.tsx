@@ -140,7 +140,6 @@ function ChecklistPage() {
                         <Checklist
                           checklistItems={list.items}
                           name={list.name}
-                          displayList={false}
                           id={list._id}
                         />
                         <button

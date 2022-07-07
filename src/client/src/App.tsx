@@ -75,18 +75,7 @@ function App() {
               </div>
               <div className="col-3">
                 {/* TODO: make todolist a global member of user */}
-                <Checklist
-                  name="Todos"
-                  checklistItems={todos}
-                  displayList={false}
-                  id="todos"
-                />
-                <Checklist
-                  name="Missed Todos:"
-                  checklistItems={todos}
-                  displayList={true}
-                  id="missedTodos"
-                />
+                <Checklist name="Todos" checklistItems={todos} id="todos" />
               </div>
             </div>
           </div>
