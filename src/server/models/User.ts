@@ -1,4 +1,5 @@
-import { Schema, model, Document, Model, Types } from 'mongoose';
+import { Schema, model, Document, Model, Types, Query } from 'mongoose';
+import Checklist from './Checklist';
 import bcrypt = require('bcrypt');
 
 // define the interface
@@ -7,6 +8,7 @@ export interface UserDocument extends Document {
   password: string;
   checklists: Types.ObjectId[];
   isCorrectPassword: Function;
+  todo: Types.ObjectId;
 }
 
 // define the schema
@@ -26,10 +28,14 @@ const userSchema = new Schema<UserDocument>({
   checklists: {
     type: [{ type: Schema.Types.ObjectId, ref: 'Checklist' }],
   },
+  todo: {
+    type: Schema.Types.ObjectId,
+    ref: 'Checklist',
+  },
 });
 
-// before making a new user or updating a user's password, ecrypt it
 userSchema.pre('save', async function (next: Function) {
+  // before making a new user or updating a user's password, ecrypt it
   if (this.isNew || this.isModified('password')) {
     const saltRounds = 10;
     this.password = await bcrypt.hash(this.password, saltRounds);
