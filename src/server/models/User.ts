@@ -40,6 +40,17 @@ userSchema.pre('save', async function (next: Function) {
     const saltRounds = 10;
     this.password = await bcrypt.hash(this.password, saltRounds);
   }
+
+  // if we are creating a new user they by default get a todo list
+  if (this.isNew) {
+    const todoList = await Checklist.create({
+      user: this._id,
+      name: 'To Dos',
+      todoList: true,
+    });
+    this.todo = todoList._id;
+  }
+
   next();
 });
 

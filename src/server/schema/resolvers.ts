@@ -5,8 +5,9 @@ import { signToken } from '../util/auth';
 import { Types } from 'mongoose';
 
 /**
- * A getter used for getting a checklist. This is repeated enough to merit a
- * small function
+ * A getter used for getting a checklist. This will find the checklist,
+ * validate that the id given was the correct one, and then authenticate that
+ * the user getting it has authorization
  */
 const getChecklist = async (id: Types.ObjectId | string, userId: string) => {
   const ret = await Checklist.findById(id);
@@ -65,7 +66,9 @@ const resolvers = {
   Query: {
     me: async (parent: any, args: any, context: any) => {
       if (context.user) {
-        return User.findById(context.user._id).populate('checklists');
+        return User.findById(context.user._id)
+          .populate('checklists')
+          .populate('todo');
       }
       throw new AuthenticationError('You need to be logged in!');
     },
@@ -92,7 +95,9 @@ const resolvers = {
       parent: any,
       { email, password }: { email: string; password: string }
     ) => {
-      const user = await User.findOne({ email }).populate('checklists');
+      const user = await User.findOne({ email })
+        .populate('checklists')
+        .populate('todo');
 
       if (!user) {
         throw new AuthenticationError('Incorrect email or password');

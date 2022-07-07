@@ -12,12 +12,16 @@ interface ChecklistDocument extends Document<Types.ObjectId> {
   name: string;
   items: ChecklistItem[];
   user: Types.ObjectId;
+  todoList: boolean;
 }
 
 const checklistSchema = new Schema<ChecklistDocument>({
   name: {
     type: String,
     required: true,
+  },
+  todoList: {
+    type: Boolean,
   },
   user: {
     type: Schema.Types.ObjectId,
@@ -27,9 +31,10 @@ const checklistSchema = new Schema<ChecklistDocument>({
   items: [],
 });
 
-// when a checklist is new it must
+// when a checklist is new it must add itself to the parent user
 checklistSchema.pre('save', async function (next: Function) {
-  if (this.isNew) {
+  // unless it's a to do list
+  if (this.isNew && !this.todoList) {
     // find parent
     const parentUser = await User.findById(this.user);
     if (!parentUser) throw new Error('Could not find parent user');
@@ -42,18 +47,21 @@ checklistSchema.pre('save', async function (next: Function) {
 
 // before removing a checklist make sure that it removes itself from the user
 checklistSchema.pre('remove', async function (next: Function) {
-  // get the reference to the user
-  const parentUser = await User.findById(this.user);
+  // it only happens in the case that this isn't the user's todolist
+  if (!this.todoList) {
+    // get the reference to the user
+    const parentUser = await User.findById(this.user);
 
-  // the checklist must have a parent user
-  if (!parentUser) throw new Error('could not find parent user');
+    // the checklist must have a parent user
+    if (!parentUser) throw new Error('could not find parent user');
 
-  // remove the current checklist from the parent's checklists
-  parentUser.checklists = parentUser.checklists.filter((listId) => {
-    return listId != this._id;
-  });
+    // remove the current checklist from the parent's checklists
+    parentUser.checklists = parentUser.checklists.filter((listId) => {
+      return listId != this._id;
+    });
 
-  await parentUser.save();
+    await parentUser.save();
+  }
   next();
 });
 
