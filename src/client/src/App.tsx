@@ -27,7 +27,6 @@ import Checklist from './components/Checklist';
 
 // authorization
 import auth from './util/auth';
-import { useState } from 'react';
 
 // specifying where to find graphql
 const httpLink = createHttpLink({
@@ -54,7 +53,12 @@ const client = new ApolloClient({
 
 // main app
 function App() {
-  const [todos] = useState([]);
+  let todoId = '0';
+
+  // TODO: get the todolist and send the id to the component after log in
+
+  if (auth.loggedIn()) {
+  }
 
   return (
     <ApolloProvider client={client}>
@@ -74,8 +78,7 @@ function App() {
                 </Routes>
               </div>
               <div className="col-3">
-                {/* TODO: make todolist a global member of user */}
-                <Checklist name="Todos" checklistItems={todos} id="todos" />
+                <Checklist name="To Dos" checklistItems={[]} id={todoId} />
               </div>
             </div>
           </div>
