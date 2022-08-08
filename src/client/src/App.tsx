@@ -58,6 +58,7 @@ function App() {
   // TODO: get the todolist and send the id to the component after log in
 
   if (auth.loggedIn()) {
+    const profile = auth.getProfile();
   }
 
   return (
