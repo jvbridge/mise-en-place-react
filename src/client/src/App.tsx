@@ -68,19 +68,14 @@ function App() {
         {auth.loggedIn() ? (
           <div className="container">
             <div className="row mt-3">
-              <div className="col-9">
-                <Routes>
-                  <Route path="/" element={<Dashboard />} />
-                  <Route path="/calendar" element={<Calendar />} />
-                  <Route path="/dashboard" element={<Dashboard />} />
-                  <Route path="/login" element={<Navigate to="/" />} />
-                  <Route path="/checklist" element={<ChecklistPage />} />
-                  <Route path="/*" element={<NotFound />} />
-                </Routes>
-              </div>
-              <div className="col-3">
-                <Checklist name="To Dos" checklistItems={[]} id={todoId} />
-              </div>
+              <Routes>
+                <Route path="/" element={<Dashboard />} />
+                <Route path="/calendar" element={<Calendar />} />
+                <Route path="/dashboard" element={<Dashboard />} />
+                <Route path="/login" element={<Navigate to="/" />} />
+                <Route path="/checklist" element={<ChecklistPage />} />
+                <Route path="/*" element={<NotFound />} />
+              </Routes>
             </div>
           </div>
         ) : (
