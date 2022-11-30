@@ -18,7 +18,6 @@ import {
 export interface ChecklistProps {
   checklistItems: ChecklistItem[];
   name: string;
-  displayList: boolean;
   id: string;
 }
 
@@ -28,7 +27,7 @@ export interface ChecklistItem {
   done: boolean;
 }
 
-function Checklist({ checklistItems, name, displayList, id }: ChecklistProps) {
+function Checklist({ checklistItems, name, id }: ChecklistProps) {
   // usestate for adding new items to the list
   const [newItem, setNewItem] = useState({ name: '', hidden: true });
 
@@ -119,32 +118,23 @@ function Checklist({ checklistItems, name, displayList, id }: ChecklistProps) {
         });
   };
 
-  // conditional rendering for adding an item to the list (for display lists)
-  let addItemDisplay;
-
-  if (!displayList) {
-    addItemDisplay = (
-      <button
-        className="link-button plus"
-        onClick={() => {
-          setNewItem({
-            name: newItem.name,
-            hidden: !newItem.hidden,
-          });
-        }}
-      >
-        <i className="fa-solid fa-plus"></i>
-      </button>
-    );
-  }
-
   return (
     // the whole checklist is a bootstrap Card
     <Card className="to-do-card" style={{ width: '100%' }}>
       <Card.Header className="to-do-card-header">
         <div className="d-flex justify-content-between">
           {name}
-          {addItemDisplay}
+          <button
+            className="link-button plus"
+            onClick={() => {
+              setNewItem({
+                name: newItem.name,
+                hidden: !newItem.hidden,
+              });
+            }}
+          >
+            <i className="fa-solid fa-plus"></i>
+          </button>
         </div>
       </Card.Header>
       {/* conditionally rendered section for adding new items */}
@@ -182,16 +172,12 @@ function Checklist({ checklistItems, name, displayList, id }: ChecklistProps) {
                     checked={item.done}
                   />
                   <div className="flex-fill">{item.name}</div>
-                  {displayList ? (
-                    <></>
-                  ) : (
-                    <button
-                      className="addon-btn p-2"
-                      onClick={() => deleteItem(item._id)}
-                    >
-                      Delete item
-                    </button>
-                  )}
+                  <button
+                    className="addon-btn p-2"
+                    onClick={() => deleteItem(item._id)}
+                  >
+                    Delete item
+                  </button>
                 </div>
               </ListGroupItem>
             );

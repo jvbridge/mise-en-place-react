@@ -17,6 +17,9 @@ export const LOGIN = gql`
       token
       user {
         email
+        todo {
+          _id
+        }
       }
     }
   }

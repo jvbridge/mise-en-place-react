@@ -6,6 +6,7 @@ const typeDefs = gql`
     email: String
     password: String
     checklists: [Checklist]
+    todo: Checklist
   }
 
   type Auth {

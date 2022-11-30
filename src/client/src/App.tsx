@@ -27,7 +27,6 @@ import Checklist from './components/Checklist';
 
 // authorization
 import auth from './util/auth';
-import { useState } from 'react';
 
 // specifying where to find graphql
 const httpLink = createHttpLink({
@@ -54,7 +53,13 @@ const client = new ApolloClient({
 
 // main app
 function App() {
-  const [todos] = useState([]);
+  let todoId = '0';
+
+  // TODO: get the todolist and send the id to the component after log in
+
+  if (auth.loggedIn()) {
+    const profile = auth.getProfile();
+  }
 
   return (
     <ApolloProvider client={client}>
@@ -63,31 +68,14 @@ function App() {
         {auth.loggedIn() ? (
           <div className="container">
             <div className="row mt-3">
-              <div className="col-9">
-                <Routes>
-                  <Route path="/" element={<Dashboard />} />
-                  <Route path="/calendar" element={<Calendar />} />
-                  <Route path="/dashboard" element={<Dashboard />} />
-                  <Route path="/login" element={<Navigate to="/" />} />
-                  <Route path="/checklist" element={<ChecklistPage />} />
-                  <Route path="/*" element={<NotFound />} />
-                </Routes>
-              </div>
-              <div className="col-3">
-                {/* TODO: make todolist a global member of user */}
-                <Checklist
-                  name="Todos"
-                  checklistItems={todos}
-                  displayList={false}
-                  id="todos"
-                />
-                <Checklist
-                  name="Missed Todos:"
-                  checklistItems={todos}
-                  displayList={true}
-                  id="missedTodos"
-                />
-              </div>
+              <Routes>
+                <Route path="/" element={<Dashboard />} />
+                <Route path="/calendar" element={<Calendar />} />
+                <Route path="/dashboard" element={<Dashboard />} />
+                <Route path="/login" element={<Navigate to="/" />} />
+                <Route path="/checklist" element={<ChecklistPage />} />
+                <Route path="/*" element={<NotFound />} />
+              </Routes>
             </div>
           </div>
         ) : (
